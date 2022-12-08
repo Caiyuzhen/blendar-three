@@ -1,0 +1,3 @@
+export type PerspectiveCamera = THREE.PerspectiveCamera; // 定义 PerspectiveCamera 类型
+export type Scene = THREE.Scene; // 定义 scene 类型
+export type OrthographicCamera = THREE.OrthographicCamera; // 定义 OrthographicCamera 类型
