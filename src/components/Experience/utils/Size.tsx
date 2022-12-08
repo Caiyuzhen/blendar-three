@@ -5,6 +5,7 @@ export default class Sizes{
 	height: number
 	aspect: number
 	pixeRatio: number
+	frustumSize!: number
 
 	constructor() {
 		this.width = window.innerWidth 

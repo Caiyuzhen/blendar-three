@@ -2,6 +2,7 @@ import React from 'react'
 import * as THREE from 'three' 
 import Sizes from './utils/Size'
 import Camera from './Camera'
+import Renderer from './Renderer'
 import {PerspectiveCamera, Scene, OrthographicCamera} from '../../Types/ThreeTypes'
 
 
@@ -13,6 +14,7 @@ export default class Experience {
 	public scene!: Scene   //THREE.Scene //类里边的实例属性
 	public sizes!: Sizes //类里边的实例属性
 	public camera!: Camera //类里边的实例属性
+	public renderer!: Renderer //类里边的实例属性
 
 	
 	constructor(canvas? :HTMLCanvasElement) {
@@ -28,11 +30,12 @@ export default class Experience {
 		this.scene = new THREE.Scene() //实例化一个场景, 赋值给 scene 属性
 		this.sizes = new Sizes() //实例化一个画布的尺寸, 赋值给 sizes 属性
 		this.camera = new Camera()
+		this.renderer = new Renderer() //实例化一个渲染器, 赋值给 renderer 属性
 
 
 		// // from https://threejs.org/docs/#manual/zh/introduction/Creating-a-scene
 		
-		const camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 0.1, 1000 );
+		// const camera = new THREE.PerspectiveCamera( 85, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 		// const renderer = new THREE.WebGLRenderer();
 		// renderer.setSize( window.innerWidth, window.innerHeight );
