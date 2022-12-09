@@ -23,7 +23,7 @@ export default class Camera {
 		this.sizes = this.experience.sizes //因为在 Experience 里边已经实例化了 sizes, 所以这里直接拿过来用就行了
 		this.canvas = this.experience.canvas
 		this.scene = this.experience.scene
-		console.log(this.sizes, this.scene, this.canvas);
+		// console.log(this.sizes, this.scene, this.canvas);
 		this.createPerspectiveCamera() //调用原型方法, 创建远焦相机
 		this.createOrthographicCamera() //创建正交相机
 	}

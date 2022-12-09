@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useRef, useEffect} from 'react'
 import './MainView.css'
 import Experience from './Experience/Experience'
 
@@ -9,7 +9,17 @@ export const MainView = () => {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 
 	// 根据 class new 一个实例
-	const experience = new Experience(canvasRef.current!)
+	useEffect(() => {
+		if (!canvasRef.current) {
+			return
+		}
+		const experience = new Experience(canvasRef.current!) //实际的 new 一个实例
+		// content
+		return () => {
+			// clearEffect
+		};
+	}, []);
+
 
 
 	return (

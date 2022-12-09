@@ -13,6 +13,11 @@ export default class Sizes{
 		this.aspect = this.width / this.height //画布的长宽比
 		this.pixeRatio = Math.min(window.devicePixelRatio, 2) //根据设备像素比来设置画布的像素比, 保证画布清晰度
 
+		// console.log(
+		// 	'获得宽高、比率数据',
+		// 	this.width, this.height, this.aspect, this.pixeRatio
+		// );
+
 		window.addEventListener('resize', ()=>{ //窗口改变时, 重新计算画布的长宽比
 			this.width = window.innerWidth 
 			this.height = window.innerHeight
@@ -20,4 +25,6 @@ export default class Sizes{
 			this.pixeRatio = Math.min(window.devicePixelRatio, 2) //根据设备像素比来设置画布的像素比, 保证画布清晰度
 		})
 	}
+
+
 }

@@ -26,7 +26,7 @@ export default class Renderer {
 		this.camera	= this.experience.camera
 		this.setRenderer()  //调用原型方法, 创建渲染器
 
-		console.log(this.camera, this.camera.perspectiveCamera);
+		console.log(this.canvas, this.camera, this.camera.perspectiveCamera);
 	}
 
 
