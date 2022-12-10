@@ -52,6 +52,7 @@ export default class Camera {
 			100
 		)
 		this.scene.add(this.orthographicCamera) //把相机添加到场景中
+		this.perspectiveCamera.position.set(1, 1, 6) //设置远焦相机的位置(🔥相机视角)
 	}
 
 	// 在调整屏幕大小的时候，也需要更新相机的属性跟投影矩阵

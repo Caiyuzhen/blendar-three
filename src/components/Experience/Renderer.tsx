@@ -46,11 +46,13 @@ export default class Renderer {
 		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap // 设置阴影贴图类型
 		this.renderer.setSize(this.sizes.width, this.sizes.height) // 设置渲染器的尺寸
 		this.renderer.setPixelRatio(this.sizes.pixeRatio) // 设置像素比
+		// console.log(this.sizes.width, this.sizes.height);
 	}
 
 
 	// 🔥在调整屏幕大小的时候, 更新渲染器的尺寸和像素比
 	resize() {
+		console.log('更新')
 		this.renderer.setSize(this.sizes.width, this.sizes.height) // 设置渲染器的尺寸
 		this.renderer.setPixelRatio(this.sizes.pixeRatio) // 设置像素比
 	}

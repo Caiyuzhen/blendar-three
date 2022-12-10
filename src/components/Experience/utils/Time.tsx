@@ -2,10 +2,10 @@ import React from 'react'
 import {EventEmitter} from 'events' //events 库
 
 export default class Time extends EventEmitter{
-	public start: number
-	public current: number
-	public elapsed: number
-	public delta: number
+	// public start: number
+	// public current: number
+	// public elapsed: number
+	// public delta: number
 
 	constructor() {
 		super()
