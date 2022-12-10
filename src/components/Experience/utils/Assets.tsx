@@ -11,12 +11,12 @@ export const Assets:IAsset[] = [
 	{
 		name: "room",
 		type: "glbModel",
-		path: "/models/Finale.glb",
+		path: "/src/components/public/models/Finale.glb",
 	},
 	{
 		name: "screen",
 		type: "videoTexture",
-		path: "/texture/kda.mp",
+		path: "/src/components/public/textures/kda.mp4",
 	}
 ]
 

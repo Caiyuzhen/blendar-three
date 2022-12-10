@@ -4,8 +4,9 @@ import Experience from '../Experience'
 import Sizes from '../utils/Size'
 import Camera from '../Camera'
 import {Scene, WebGLRenderer} from '../../../Types/ThreeTypes'
+import Resources from '../utils/Resources'
 import Room from './Room'
-
+import {EventEmitter} from 'events' 
 
 
 export default class World {
@@ -15,7 +16,8 @@ export default class World {
 	public scene: Scene //场景
 	public camera: Camera //相机
 	public renderer!: WebGLRenderer //渲染器 // THREE.WebGLRenderer 
-	public room: Room //房间
+	public resources: Resources //资源
+	public room!: Room //房间
 
 
 	// 🔥在构造函数中初始化实例属性
@@ -25,7 +27,12 @@ export default class World {
 		this.canvas = this.experience.canvas
 		this.scene = this.experience.scene
 		this.camera	= this.experience.camera
-		this.room = new Room()
+		this.resources = this.experience.resources
+
+		//🔥资源都加载好后，在 World 类里边触发 ready 事件, 创建一个房间
+		this.resources.on("ready", ()=>{
+			this.room = new Room()
+		})
 	}
 
 
