@@ -15,7 +15,7 @@ export default class Room {
 		this.experience = new Experience()
 		this.scene = this.experience.scene
 
-		// 添加一些基础立方体
+		// 添加一些基础
 		const geometry = new THREE.BoxGeometry(1, 1, 1)
 		const material = new THREE.MeshBasicMaterial({color: '#3370FF'})
 		const cube = new THREE.Mesh(geometry, material)

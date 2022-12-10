@@ -1,5 +1,13 @@
-// 资源
-export default [
+// 定义资源的类型
+export interface IAsset {
+	name: string;
+	type: string;
+	path: string;
+  }
+
+
+// 导出具体的资源路径
+export const Assets:IAsset[] = [
 	{
 		name: "room",
 		type: "glbModel",
@@ -11,3 +19,6 @@ export default [
 		path: "/texture/kda.mp",
 	}
 ]
+
+export default Assets
+
