@@ -38,10 +38,14 @@ export default class Experience {
 		this.sizes = new Sizes() //实例化一个画布的尺寸, 赋值给 sizes 属性
 		this.camera = new Camera()
 		this.renderer = new Renderer() //实例化一个渲染器, 赋值给 renderer 属性
-		this.world = new World() //🌍实例化一个世界, 赋值给 world 属性（world 一定义放最后面！）
+		
 		this.resources = new Resources(Assets) //🔥实例化一个资源管理器, 赋值给 resources 属性
-		// console.log(Assets);
 
+		this.world = new World() //🌍实例化一个世界, 赋值给 world 属性（🔥🔥world 一定义放最后面！不然获取不到 resources!）
+		// console.log(this.resources);
+
+
+		
 		/* events.EventEmitter, 事件, 根据 Time 内的事件来更新，然后调用所有子类的 update() 方法 */
 		//🎃第四步: 调用触发器, 触发 Experience 内的更新方法
 		this.time.on("Update", ()=>{

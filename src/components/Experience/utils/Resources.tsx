@@ -17,7 +17,7 @@ export default class Resources extends EventEmitter {
 		this.experience = new Experience()
 		this.renderer = this.experience.renderer
 		this.assets = assets
-		console.log(this.assets);
+		// console.log(this.assets);
 
 		
 		this.items = {}//用来搜集所有加载过后的资源
@@ -73,11 +73,11 @@ export default class Resources extends EventEmitter {
 		this.items[asset.name] = file //通过键值对的方式获取对应的 path 文件, 收集到 items 内
 		this.loaded ++  //🔥加载器的数量
 
-		console.log('资源加载中');
+		// console.log('🚗资源加载中');
 
 		if(this.loaded === this.queue) { //如果加载器的数量等于资源队列的数量, 则说明所有资源都加载完毕
 			//🔥资源都加载好后，在 World 类里边触发 ready 事件
-			console.log('资源加载完毕', file);
+			console.log('😄资源加载完毕', file);
 			this.emit("ready")
 		}
 	}

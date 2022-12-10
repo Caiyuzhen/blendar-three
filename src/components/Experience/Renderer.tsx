@@ -26,7 +26,7 @@ export default class Renderer {
 		this.camera	= this.experience.camera
 		this.setRenderer()  //调用原型方法, 创建渲染器
 
-		console.log(this.canvas, this.camera, this.camera.perspectiveCamera);
+		// console.log(this.canvas, this.camera, this.camera.perspectiveCamera);
 	}
 
 
@@ -52,7 +52,7 @@ export default class Renderer {
 
 	// 🔥在调整屏幕大小的时候, 更新渲染器的尺寸和像素比
 	resize() {
-		console.log('更新')
+		// console.log('更新')
 		this.renderer.setSize(this.sizes.width, this.sizes.height) // 设置渲染器的尺寸
 		this.renderer.setPixelRatio(this.sizes.pixeRatio) // 设置像素比
 	}

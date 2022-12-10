@@ -3,7 +3,7 @@ import Experience from './Experience'
 import * as THREE from 'three'
 import Sizes from './utils/Size'
 import {PerspectiveCamera, Scene, OrthographicCamera} from '../../Types/ThreeTypes'
-
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 
 
 
@@ -12,9 +12,10 @@ export default class Camera {
 	public sizes: Sizes //比例
 	public canvas ?: HTMLCanvasElement //画布
 	public scene: Scene //场景
-	public perspectiveCamera!: PerspectiveCamera //相机
-	public orthographicCamera!: OrthographicCamera //相机
+	public perspectiveCamera!: PerspectiveCamera //远景相机
+	public orthographicCamera!: OrthographicCamera //近景相机
 	public frustumSize! : number //正交相机的视锥体大小
+	public controls!: OrbitControls //相机轨道控制器
 
 
 	// 🔥在构造函数中初始化实例属性
@@ -26,9 +27,10 @@ export default class Camera {
 		// console.log(this.sizes, this.scene, this.canvas);
 		this.createPerspectiveCamera() //调用原型方法, 创建远焦相机
 		this.createOrthographicCamera() //创建正交相机
+		this.setOrbitControls() //创建相机轨道控制器
 	}
 
-	// 创建远焦相机的方法
+	// 创建远景相机的方法
 	createPerspectiveCamera() {
 		this.perspectiveCamera = new THREE.PerspectiveCamera(
 			35, 
@@ -40,7 +42,7 @@ export default class Camera {
 		this.scene.add(this.perspectiveCamera) //把相机添加到场景中
 	}
 
-	// 创建正交相机的方法
+	// 创建近景相机的方法
 	createOrthographicCamera() {
 		this.frustumSize = 5 //正交相机的视锥体大小
 		this.orthographicCamera = new THREE.OrthographicCamera(
@@ -53,6 +55,13 @@ export default class Camera {
 		)
 		this.scene.add(this.orthographicCamera) //把相机添加到场景中
 		this.perspectiveCamera.position.set(1, 1, 6) //设置远焦相机的位置(🔥相机视角)
+	}
+
+	// 创建相机轨道控制器
+	setOrbitControls() {
+		this.controls = new OrbitControls(this.perspectiveCamera, this.canvas)
+		this.controls.enableDamping = true //打开阻尼效果
+		this.controls.enableZoom = true //打开缩放
 	}
 
 	// 在调整屏幕大小的时候，也需要更新相机的属性跟投影矩阵
@@ -69,6 +78,6 @@ export default class Camera {
 
 	// 更新相机的位置（轨道）
 	update() {
-
+		this.controls.update()
 	}
 }
