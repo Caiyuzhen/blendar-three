@@ -61,6 +61,7 @@ export default class Resources extends EventEmitter {
 				this.videoTexture[asset.name].flipY = true //将视频纹理纵向翻转
 				this.videoTexture[asset.name].minFilter = THREE.NearestFilter //设置纹理过滤方式
 				this.videoTexture[asset.name].magFilter = THREE.NearestFilter //设置纹理过滤方式
+			
 				this.videoTexture[asset.name].generateMinimap = true //设置纹理过滤方式
 				this.videoTexture[asset.name].encoding = THREE.sRGBEncoding //设置纹理编码方式
 

@@ -10,7 +10,7 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 export default class Camera {
 	public experience: Experience
 	public sizes: Sizes //比例
-	public canvas ?: HTMLCanvasElement //画布
+	public canvas ? : HTMLCanvasElement //画布
 	public scene: Scene //场景
 	public perspectiveCamera!: PerspectiveCamera //远景相机
 	public orthographicCamera!: OrthographicCamera //近景相机
@@ -40,6 +40,9 @@ export default class Camera {
 			1000
 		) //0.1, 100 为摄像机距离的远近
 		this.scene.add(this.perspectiveCamera) //把相机添加到场景中
+		this.perspectiveCamera.position.x = 4
+        this.perspectiveCamera.position.y = 4;
+        this.perspectiveCamera.position.z = 4;
 	}
 
 	// 创建近景相机的方法
@@ -50,11 +53,19 @@ export default class Camera {
 			(this.sizes.aspect * this.frustumSize) / 2,
 			this.sizes.frustumSize / 2,
 			- this.sizes.frustumSize / 2,
-			-100,
-			100
+			-50,
+			50
 		)
 		this.scene.add(this.orthographicCamera) //把相机添加到场景中
-		this.perspectiveCamera.position.set(1, 1, 6) //设置远焦相机的位置(🔥相机视角)
+		// this.perspectiveCamera.position.set(12, 8, 10) //设置远焦相机的位置(🔥相机视角)
+
+		// 创建网格辅助器（地面网格）
+		const size = 10
+		const divisions = 10
+		const gridHelper = new THREE.GridHelper(size, divisions)
+		this.scene.add(gridHelper)
+		const axesHelper = new THREE.AxesHelper(10)
+		this.scene.add(axesHelper)
 	}
 
 	// 创建相机轨道控制器

@@ -19,7 +19,7 @@ export default class Room {
 		this.experience = new Experience()
 		this.scene = this.experience.scene
 		this.resources = this.experience.resources
-		this.room = this.resources.items.room
+		this.room = this.resources.items.room //⚡️通过 resources 获取到 room 的 3D 物体
 		this.actualRoom = this.room.scene //真正想要展示在 ROOM 内的 3D 物体
 		console.log(this.actualRoom); //真正想要展示在 ROOM 内的 3D 物体
 
@@ -33,9 +33,30 @@ export default class Room {
 	}
 
 
-	//把 3D 物体添加到场景中的方法
+	//⚡️把 3D 物体添加到场景中的方法
 	setModel(){
+		// ☁️给所有子元素设置投影
+		if(this.actualRoom.children.length > 0){//检查一下是否有子元素
+			this.actualRoom.children.forEach((child)=>{
+				// console.log(child)
+				child.castShadow = true
+				child.receiveShadow = true
+
+				// 判断 child 是不是 Group
+				if(child.type === 'Group'){ //🔥用于 children 是不是一个 Group
+					child.children.forEach((groupchild)=>{
+						groupchild.castShadow = true
+						groupchild.receiveShadow = true
+						console.log('分组的元素', groupchild.castShadow);
+					})
+				}
+			})
+		}
+		
+
 		this.scene.add(this.actualRoom)
+		this.actualRoom.scale.set(0.1, 0.1, 0.1) //缩放房间内的物体
+		this.actualRoom.rotation.y = Math.PI / 4 //旋转房间内的物体
 	}
 
 
