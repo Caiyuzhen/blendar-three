@@ -20,7 +20,7 @@ export default class Experience {
 	public camera!: Camera //类里边的实例属性
 	public renderer!: Renderer //类里边的实例属性
 	public resources!: Resources //类里边的实例属性
-	public world!: World //定义一个世界
+	public world!: World //定义一个世界(所有模型都在 World 里边的 Home 进行实例化！)
 
 	
 	constructor(canvas? :HTMLCanvasElement) {

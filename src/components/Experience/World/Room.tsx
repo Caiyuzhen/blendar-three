@@ -102,6 +102,6 @@ export default class Room {
 
 	update() {
 		// 🐟二: 根据刷新率更新并调用动画, 让动画动起来(Experience 内调用更新、World 内部调用更新、 Room 内部调用更新)
-		this.mixer.update(this.time.delta)
+		this.mixer.update(this.time.delta * 0.0009) //乘以一定的倍数让动画变慢
 	}
 }

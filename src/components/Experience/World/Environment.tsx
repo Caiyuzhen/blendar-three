@@ -22,13 +22,16 @@ export default class Environment {
 
 	setSunLight() {
 		//方向光 - 该光源可以投射阴影
-		 this.sunLight = new THREE.DirectionalLight("#ffffff", 3);
+		this.sunLight = new THREE.DirectionalLight("#ffffff", 3);
         this.sunLight.castShadow = true; //开启阴影
         this.sunLight.shadow.camera.far = 20; 
         this.sunLight.shadow.mapSize.set(4096, 4096); //影响阴影的质量
         this.sunLight.shadow.normalBias = 0.05; //影响阴影的模糊程度
 		this.sunLight.position.set(1.5, 8, 3) //光照的位置 
 		this.scene.add(this.sunLight) //🌞将光照添加到场景中
+
+		
+		// 相机的方向 helper
 		// const helper = new THREE.CameraHelper(this.sunLight.shadow.camera);
         // this.scene.add(helper);
 

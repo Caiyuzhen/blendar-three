@@ -14,8 +14,9 @@ export default class Camera {
 	public scene: Scene //场景
 	public perspectiveCamera!: PerspectiveCamera //远景相机
 	public orthographicCamera!: OrthographicCamera //近景相机
-	public frustumSize! : number //正交相机的视锥体大小
+	public frustumSize!: number //正交相机的视锥体大小
 	public controls!: OrbitControls //相机轨道控制器
+	private helper!: THREE.CameraHelper
 
 
 	// 🔥在构造函数中初始化实例属性
@@ -24,13 +25,15 @@ export default class Camera {
 		this.sizes = this.experience.sizes //因为在 Experience 里边已经实例化了 sizes, 所以这里直接拿过来用就行了
 		this.canvas = this.experience.canvas
 		this.scene = this.experience.scene
+		this.frustumSize = this.sizes.frustumSize //⚡️⚡️要从 sizes 中拿到 frustumSize 的值, 因为它是动态的
 		// console.log(this.sizes, this.scene, this.canvas);
 		this.createPerspectiveCamera() //调用原型方法, 创建远焦相机
 		this.createOrthographicCamera() //创建正交相机
 		this.setOrbitControls() //创建相机轨道控制器
 	}
 
-	// 创建远景相机的方法
+
+	// ⚡️创建透视（3/4）相机的方法
 	createPerspectiveCamera() {
 		this.perspectiveCamera = new THREE.PerspectiveCamera(
 			35, 
@@ -39,25 +42,33 @@ export default class Camera {
 			0.1, 
 			1000
 		) //0.1, 100 为摄像机距离的远近
-		this.scene.add(this.perspectiveCamera) //把相机添加到场景中
-		this.perspectiveCamera.position.x = 4
-        this.perspectiveCamera.position.y = 4;
-        this.perspectiveCamera.position.z = 4;
+		this.scene.add(this.perspectiveCamera) //把相机添加到场景中，👇设置相机的默认视角
+		this.perspectiveCamera.position.x = 8
+        this.perspectiveCamera.position.y = 5;
+        this.perspectiveCamera.position.z = 5;
 	}
 
-	// 创建近景相机的方法
+
+	// ⚡️创建正交相机的方法
 	createOrthographicCamera() {
-		this.frustumSize = 5 //正交相机的视锥体大小
 		this.orthographicCamera = new THREE.OrthographicCamera(
 			(-this.sizes.aspect * this.frustumSize) / 2,
 			(this.sizes.aspect * this.frustumSize) / 2,
 			this.sizes.frustumSize / 2,
 			- this.sizes.frustumSize / 2,
-			-50,
-			50
+			-10,
+			10,
 		)
+
+		// console.log(this.frustumSize)
+		// console.log(this.orthographicCamera);
 		this.scene.add(this.orthographicCamera) //把相机添加到场景中
 		// this.perspectiveCamera.position.set(12, 8, 10) //设置远焦相机的位置(🔥相机视角)
+
+
+		// 正交相机的方向 helper, 用来调试相机的方向, 记得最后得在 update() 中持续更新
+		this.helper = new THREE.CameraHelper(this.orthographicCamera);
+        this.scene.add(this.helper);
 
 		// 创建网格辅助器（地面网格）
 		const size = 10
@@ -68,12 +79,14 @@ export default class Camera {
 		this.scene.add(axesHelper)
 	}
 
+
 	// 创建相机轨道控制器
 	setOrbitControls() {
 		this.controls = new OrbitControls(this.perspectiveCamera, this.canvas)
 		this.controls.enableDamping = true //打开阻尼效果
 		this.controls.enableZoom = true //打开缩放
 	}
+
 
 	// 在调整屏幕大小的时候，也需要更新相机的属性跟投影矩阵
 	resize() {
@@ -84,11 +97,17 @@ export default class Camera {
 		this.orthographicCamera.right = (this.sizes.aspect * this.frustumSize) / 2,
 		this.orthographicCamera.top = this.sizes.frustumSize / 2,
 		this.orthographicCamera.bottom = - this.sizes.frustumSize / 2,
-		this.perspectiveCamera.updateProjectionMatrix()//更新投影矩阵
+		this.orthographicCamera.updateProjectionMatrix()//更新投影矩阵
 	}
 
 	// 更新相机的位置（轨道）
 	update() {
+		// console.log(this.perspectiveCamera.position); //打印出透视（3/4）相机的位置
 		this.controls.update()
+
+		this.helper.matrixWorldNeedsUpdate = true //持续更新相机的方向
+		this.helper.update()
+		this.helper.position.copy(this.orthographicCamera.position) //持续更新相机的位置
+		this.helper.rotation.copy(this.orthographicCamera.rotation) //持续更新相机的位置
 	}
 }
