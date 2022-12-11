@@ -25,8 +25,8 @@ export default class Environment {
 		 this.sunLight = new THREE.DirectionalLight("#ffffff", 3);
         this.sunLight.castShadow = true;
         this.sunLight.shadow.camera.far = 20;
-        this.sunLight.shadow.mapSize.set(2048, 2048);
-        this.sunLight.shadow.normalBias = 0.05;
+        this.sunLight.shadow.mapSize.set(4096, 4096); //影响阴影的质量
+        this.sunLight.shadow.normalBias = .05;
 		this.sunLight.position.set(1.5, 8, 3) //光照的位置 
 		this.scene.add(this.sunLight) //🌞将光照添加到场景中
 		// const helper = new THREE.CameraHelper(this.sunLight.shadow.camera);
