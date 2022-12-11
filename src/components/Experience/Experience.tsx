@@ -48,11 +48,11 @@ export default class Experience {
 		
 		/* events.EventEmitter, 事件, 根据 Time 内的事件来更新，然后调用所有子类的 update() 方法 */
 		//🎃第四步: 调用触发器, 触发 Experience 内的更新方法
-		this.time.on("Update", ()=>{
+		this.time.on("Update", ()=>{ //时间更新，触发 Update 事件
 			this.update()
 		})
 
-		this.time.on("resize", ()=>{
+		this.sizes.on("resize", ()=>{ //屏幕拉伸，触发 resize 事件
 			this.resize()
 		})
 		// // from https://threejs.org/docs/#manual/zh/introduction/Creating-a-scene
@@ -61,6 +61,7 @@ export default class Experience {
 	////🎃第三步: 定义更新个函数, 统一调用所有子类内的 update() 方法！
 	update() {
 		this.camera.update()
+		this.world.update()//让动画动起来(Experience 内调用更新、World 内部调用更新、 Room 内部调用更新)
 		this.renderer.update()
 	}
 

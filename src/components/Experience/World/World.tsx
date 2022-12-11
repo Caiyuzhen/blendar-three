@@ -45,6 +45,10 @@ export default class World {
 	}
 
 	update() {
+		// 🐟三: 在上边🔥资源都加载好后, 不断地更新整个 World , 让动画动起来(Experience 内调用更新、World 内部调用更新、 Room 内部调用更新)
+		if(this.room) {
+			this.room.update()
+		}
 
 	}
 }
