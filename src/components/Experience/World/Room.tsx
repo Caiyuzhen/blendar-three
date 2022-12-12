@@ -83,7 +83,7 @@ export default class Room {
 		
 		this.scene.add(this.actualRoom)
 		this.actualRoom.scale.set(0.1, 0.1, 0.1) //缩放房间内的物体
-		this.actualRoom.rotation.y = Math.PI / 4 //旋转房间内的物体
+		this.actualRoom.rotation.y = Math.PI / 8 //旋转房间内的物体
 	}
 
 

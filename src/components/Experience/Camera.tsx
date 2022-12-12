@@ -43,9 +43,9 @@ export default class Camera {
 			1000
 		) //0.1, 100 为摄像机距离的远近
 		this.scene.add(this.perspectiveCamera) //把相机添加到场景中，👇设置相机的默认视角
-		this.perspectiveCamera.position.x = 8
-        this.perspectiveCamera.position.y = 5;
-        this.perspectiveCamera.position.z = 5;
+		this.perspectiveCamera.position.x = 14
+        this.perspectiveCamera.position.y = 12;
+        this.perspectiveCamera.position.z = 12;
 	}
 
 
