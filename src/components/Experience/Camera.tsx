@@ -84,7 +84,7 @@ export default class Camera {
 	setOrbitControls() {
 		this.controls = new OrbitControls(this.perspectiveCamera, this.canvas)
 		this.controls.enableDamping = true //打开阻尼效果
-		this.controls.enableZoom = true //打开缩放
+		this.controls.enableZoom = false //🪟用滚轮缩放画布
 	}
 
 
