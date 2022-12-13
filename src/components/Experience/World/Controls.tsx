@@ -22,9 +22,9 @@ export default class Controls {
 	public progress!: number
 	public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	public position!: Vector3 //📹初始化时相机在曲线上的坐标点
-	public back: boolean //判断滚轮方向
+	public back!: boolean //判断滚轮方向
 	public lookAtPosition!: Vector3 //👀初始化要看向的点
-	public currentLookAt: number //👀最终看向的点
+	// public currentLookAt: number //👀最终看向的点
 
 	// ⭕️3 个向量，用于计算相机的旋转角度
 	public directionalVector: Vector3  //a 边 
@@ -39,26 +39,27 @@ export default class Controls {
 		this.time = this.experience.time
 		this.camera = this.experience.camera
 		this.resources = this.experience.resources
-		this.progress = 0 //相机的轨道
-		this.dummyCurve = new THREE.Vector3(0, 0, 0) //曲线上的点
-		this.back = false //判断滚轮方向
+		// this.progress = 0 //相机的轨道
+		// this.dummyCurve = new THREE.Vector3(0, 0, 0) //曲线上的点
+		// this.back = false //判断滚轮方向
 
 		// 🍉一: 创建缓动函数的参数（🔥利用 GSAP 库让 current 过渡到 target！）
 		this.lerp = {
 			current: 0, //指定当前值
-			target: 0, //指定目标值
+			target:0.7, //指定目标值
 			ease: 0.15,
 		} 
 
 		// 🍉二: 定义曲线上的点(相机最终架设的点）, 以及我们最终要看向的点
 		this.position = new THREE.Vector3(0, 0, 0) //📹相机要沿着曲线上的点进行运动
 		this.lookAtPosition = new THREE.Vector3(0, 0, 0) //👀我们相机头最终要运动到的点
-		this.currentLookAt = (this.lerp.current as number) + 0.00001  //每次摄像机头偏移的位置
+		// this.currentLookAt = (this.lerp.current as number) + 0.00001  //每次摄像机头偏移的位置
+
 
 		// ⭕️3 个向量，用于计算相机的旋转角度
 		this.directionalVector = new THREE.Vector3(0, 0, 0)  //a 边 
-		this.staticVector = new THREE.Vector3(0, 1, 0) //b 边
-		this.crossVector = new THREE.Vector3() //c 边 (最终算出来的角度方向)
+		this.staticVector = new THREE.Vector3(0, 0, 0) //b 边
+		this.crossVector = new THREE.Vector3(0, 0, 0) //c 边 (最终算出来的角度方向)
 
 		this.setPath()
 		this.onWheel()// ⚡️当鼠标滚轮滚动时, 改变摄像机的视角（也就是改变 curve 的曲线）, 改变 progress
@@ -66,46 +67,24 @@ export default class Controls {
 
 
 
-	// 🍉三: 用滚轮控制让相机跟随 curve 曲线而运动
-	onWheel() {
-		window.addEventListener('wheel', (e)=>{
-			// console.log(e);
-			if(e.deltaY > 0) {
-				this.lerp.target += 0.01
-				this.back = false //判断滚动方向，根据滚动方向 += 0.01
-				// 限制阈值的方法一
-				// if(this.lerp.target > 1) {
-				// 	// this.lerp.target = 1
-				// }
-			} else {
-				this.lerp.target -= 0.01 
-				this.back = true //判断滚动方向，根据滚动方向 -= 0.01
-				// 限制阈值的方法一
-				// if(this.lerp.target < 0) {
-				// 	this.lerp.target = 1
-				// }
-			}
-			console.log(this.lerp.target);
-			// if(e.deltaY > 0) { //当鼠标滚轮往下滚动时, 让 progress 增加, 直到 this.progress % 1
-			// 	this.progress += 0.01 //每次运动一丢丢
-			// } else {
-			// 	this.progress -= 0.01 
-			// 	if(this.progress < 0) { //当 progress < 0 的时候, 重新赋值为 1, 让相机继续往前运动(0~1)
-			// 		this.progress = 1
-			// 	}
-			// }
-		})
-	}
-
 
 	// 创建一条运动曲线
 	setPath() {
 		this.curve = new THREE.CatmullRomCurve3([
 			// 圆形曲线
+			// new THREE.Vector3(-5, 0, 0),
+			// new THREE.Vector3(0, 0, -5),
+			// new THREE.Vector3(5, 0, 0),
+			// new THREE.Vector3(0, 0, 5),
+
+			// 更自由的曲线，结合摄像机视角来运动
 			new THREE.Vector3(-5, 0, 0),
 			new THREE.Vector3(0, 0, -5),
-			new THREE.Vector3(5, 0, 0),
-			new THREE.Vector3(0, 0, 5),
+			new THREE.Vector3(5, 8, 0),
+			new THREE.Vector3(0, 5, 5),
+			new THREE.Vector3(2, 0, 5),
+			new THREE.Vector3(0, 5, 5),
+			new THREE.Vector3(-12, 6, 5),
 
 			// 贯穿曲线
 			// new THREE.Vector3(-10, 0, 10),
@@ -128,32 +107,99 @@ export default class Controls {
 	}
 
 
+
+
+	// 🍉三: 用滚轮控制让相机跟随 curve 曲线而运动
+	onWheel() {
+		window.addEventListener('wheel', (e)=>{
+			// console.log(e);
+			if(e.deltaY > 0) {
+				this.lerp.target += 0.01
+				// this.back = false //判断滚动方向，根据滚动方向 += 0.01
+				// 限制阈值的方法一
+				// if(this.lerp.target > 1) {
+				// 	// this.lerp.target = 1
+				// }
+			} else { //相当于 e.deltaY < 0
+				this.lerp.target -= 0.01 
+				// this.back = true //判断滚动方向，根据滚动方向 -= 0.01
+				// 限制阈值的方法一
+				if(this.lerp.target <= 0) {
+					this.lerp.target = 0
+				}
+			}
+			console.log("target 值:", this.lerp.target);
+			// console.log(
+				// 	"one:",
+				// 	this.progress, this.dummyCurve, this.progress,'\n',
+				// 	"two:",
+					
+				// 	this.lerp.current, this.lerp.target, this.lerp.ease,'\n',
+				// 	"three:",
+				// 	this.position,this.lookAtPosition, this.currentLookAt
+			// );
+
+			// if(e.deltaY > 0) { //当鼠标滚轮往下滚动时, 让 progress 增加, 直到 this.progress % 1
+			// 	this.progress += 0.01 //每次运动一丢丢
+			// } else {
+			// 	this.progress -= 0.01 
+			// 	if(this.progress < 0) { //当 progress < 0 的时候, 重新赋值为 1, 让相机继续往前运动(0~1)
+			// 		this.progress = 1
+			// 	}
+			// }
+		})
+	}
+
+
+
+
+	resize() { //Size 更新后, 调用 camera 和 renderer 的 resize 方法
+
+	}
+
+	
+
+
 	update() {
-		//⭕️ 圆形线运动 ————————————————
+		//⭕️ 基础版 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 		this.lerp.current = GSAP.utils.interpolate( //🔥GSAP 的这个算法会让 current 过渡到 target 变缓和, 计算方式封装到 GSAP 的库中了！
 			this.lerp.current, //当前值
 			this.lerp.target, //目标值，随着滚轮的运动而 += 或 -=
-			this.lerp.ease, 
+			this.lerp.ease,  //缓动值
 		) 
 
-		this.curve.getPointAt(this.lerp.current as number % 1, this.position)
-		this.camera.orthographicCamera.position.copy(this.dummyCurve)//📹把相机架设到轨道上
-
-		this.directionalVector.subVectors( // (最终算出来的角度方向)
-			this.curve.getPointAt((this.lerp.current % 1) + 0.000001), 
-			this.position, 
-		)
-
-		this.directionalVector.normalize()
-
-		this.crossVector.crossVectors( //计算出最终交叉向量的方向
-			this.directionalVector,
-			this.staticVector
-		) 
-		this.camera.orthographicCamera.lookAt(this.crossVector)
 
 
-		//⭕️ 曲线手动运动 ————————————————
+		//⭕️ 圆形线手动运动 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+		// this.lerp.current = GSAP.utils.interpolate( //🔥GSAP 的这个算法会让 current 过渡到 target 变缓和, 计算方式封装到 GSAP 的库中了！
+		// 	this.lerp.current, //当前值
+		// 	this.lerp.target, //目标值，随着滚轮的运动而 += 或 -=
+		// 	this.lerp.ease,  //缓动值
+		// ) 
+
+
+		// this.curve.getPointAt(this.lerp.current % 1, this.position) // getPointAt(a,b), a 是具体的值, b 是给谁赋值
+		// this.camera.orthographicCamera.position.copy(this.position)//📹把相机架设到轨道上,
+
+		// this.directionalVector.subVectors( // (最终算出来的相机头的角度方向)
+		// 	this.curve.getPointAt((this.lerp.current % 1) + 0.000001), 
+		// 	this.position, 
+		// )
+
+		// this.directionalVector.normalize() //将向量的长度规范化为 1。
+
+		// this.crossVector.crossVectors( //计算出最终交叉向量的方向
+		// 	this.directionalVector,
+		// 	this.staticVector
+		// ) 
+
+		// this.crossVector.multiplyScalar(100000)// 延长矢量线的长度
+		// this.camera.orthographicCamera.lookAt(this.crossVector)
+		// // this.camera.orthographicCamera.lookAt(0,0,0)
+
+
+
+		//⭕️ 曲线手动运动 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 		// 🍉四: 把上面定义的参数设置为缓动函数的值 (需要安装依赖库: npm i gsap --save-dev)
 		// this.lerp.current = GSAP.utils.interpolate( //🔥GSAP 的这个算法会让 current 过渡到 target 变缓和, 计算方式封装到 GSAP 的库中了！
 		// 	this.lerp.current, //当前值
@@ -177,16 +223,16 @@ export default class Controls {
 
 		// // 🍉七: 赋值给具体的坐标(🔥把 current 赋值给 position)
 		// this.curve.getPointAt(this.lerp.current, this.position)  //📹相机要去到的位置: getPointAt(a,b), a 是具体的值, b 是给谁赋值, 因为 a 会一直 += 或 -=, 所以 b 会一直在曲线上运动
-		// this.curve.getPointAt(this.currentLookAt, this.lookAtPosition)//👀我们相机头要看向的位置:（在相机的前方, 所以微笑的加一点）
+		// this.curve.getPointAt(this.currentLookAt, this.lookAtPosition)//👀我们相机头要看向的位置:（在相机的前方, 所以微小的加一点）
 
 
 		// // 🍉八: 最终把相机的位置设置为曲线上的点
 		// this.camera.orthographicCamera.position.copy(this.position)//📹把相机架设到轨道(position)上
 		// this.camera.orthographicCamera.lookAt(this.lookAtPosition)//👀我们相机头最终要看向的位置
 
+		
 
-
-		//⭕️ 曲线自动运动 ————————————————
+		//⭕️ 曲线自动运动 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 		// getPointAt(a,b), a 是具体的值, b 是给谁赋值, 因为 a 会一直 += 或 -=, 所以 b 会一直在曲线上运动
 		// this.curve.getPointAt(this.progress % 1, this.dummyCurve) //% 1 表示取余数, 当 progress 为 0.1 时 mod 运算的结果为 0.1, 当 progress = 1 的时 mode 运算结果为 0 , 0-1 之间的数值
 		// console.log(this.dummyCurve)
@@ -203,11 +249,6 @@ export default class Controls {
 		// }
 
 		// this.camera.orthographicCamera.position.copy(this.dummyCurve)//📹把相机架设到轨道上
-	}
-
-
-	resize() { //Size 更新后, 调用 camera 和 renderer 的 resize 方法
-
 	}
 }
 

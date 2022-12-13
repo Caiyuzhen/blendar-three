@@ -14,7 +14,7 @@ export default class Sizes extends EventEmitter{
 		this.height = window.innerHeight
 		this.aspect = this.width / this.height //画布的长宽比
 		this.pixeRatio = Math.min(window.devicePixelRatio, 2) //根据设备像素比来设置画布的像素比, 保证画布清晰度
-		this.frustumSize = 5 //正交相机的视锥体大小(要写在这里, 因为会随着 resize 而改变)
+		this.frustumSize = 5 //👀正交相机的视锥体大小(要写在这里, 因为会随着 resize 而改变)
 		
 		// console.log(
 		// 	'获得宽高、比率数据',

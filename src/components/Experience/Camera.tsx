@@ -37,13 +37,12 @@ export default class Camera {
 	createPerspectiveCamera() {
 		this.perspectiveCamera = new THREE.PerspectiveCamera(
 			35, 
-			this.
-			sizes.aspect, 
+			this.sizes.aspect, 
 			0.1, 
 			1000
 		) //0.1, 100 为摄像机距离的远近
 		this.scene.add(this.perspectiveCamera) //把相机添加到场景中，👇设置相机的默认视角
-		this.perspectiveCamera.position.x = 14
+		this.perspectiveCamera.position.x = 28
         this.perspectiveCamera.position.y = 12;
         this.perspectiveCamera.position.z = 12;
 	}
@@ -51,14 +50,24 @@ export default class Camera {
 
 	// ⚡️创建正交相机的方法
 	createOrthographicCamera() {
-		this.orthographicCamera = new THREE.OrthographicCamera(
-			(-this.sizes.aspect * this.frustumSize) / 2,
-			(this.sizes.aspect * this.frustumSize) / 2,
-			this.sizes.frustumSize / 2,
-			- this.sizes.frustumSize / 2,
-			-10,
-			10,
-		)
+		//👀🎿非常酷的视角
+		this.orthographicCamera = new THREE.PerspectiveCamera( 
+			35, 
+			this.sizes.aspect, 
+			0.1, 
+			1000
+		) //0.1, 100 为摄像机距离的远近
+
+		// 👀临时注释————
+		// this.orthographicCamera = new THREE.OrthographicCamera(
+		// 	(-this.sizes.aspect * this.frustumSize) / 2,
+		// 	(this.sizes.aspect * this.frustumSize) / 2,
+		// 	this.sizes.frustumSize / 2,
+		// 	- this.sizes.frustumSize / 2,
+		// 	-10,
+		// 	10,
+		// )
+		// ————
 
 		// console.log(this.frustumSize)
 		// console.log(this.orthographicCamera);

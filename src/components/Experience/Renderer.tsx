@@ -59,6 +59,42 @@ export default class Renderer {
 
 	// 更新相机的位置（轨道）
 	update() {
-		this.renderer.render(this.scene, this.camera.perspectiveCamera) //将场景和相机传给渲染器。渲染器会根据相机的视角渲染场景，并将渲染结果显示在屏幕上
+		// 显示出单个屏幕 Screen
+		// this.renderer.setViewport( //设置渲染器的视口
+		// 	0, 
+		// 	0, 
+		// 	this.sizes.width, 
+		// 	this.sizes.height
+		// )
+		// this.renderer.render(this.scene, this.camera.perspectiveCamera) //将场景和相机传给渲染器。渲染器会根据相机的视角渲染场景，并将渲染结果显示在屏幕上
+
+
+		// 显示出两个屏幕的
+		this.renderer.setViewport(0 ,0, this.sizes.width, this.sizes.height)
+		this.renderer.render(this.scene, this.camera.orthographicCamera) //👀显示中心大场景，将场景和相机传给渲染器。渲染器会根据相机的视角渲染场景，并将渲染结果显示在屏幕上
+		// this.renderer.render(this.scene, this.camera.perspectiveCamera) //👀显示中心大场景，将场景和相机传给渲染器。渲染器会根据相机的视角渲染场景，并将渲染结果显示在屏幕上
+
+		this.renderer.setScissorTest(true) 
+		
+		this.renderer.setViewport( //设置渲染器的视口
+			this.sizes.width - this.sizes.width / 3,
+            this.sizes.height - this.sizes.height / 3,
+            this.sizes.width / 3,
+            this.sizes.height / 3
+		)
+		
+
+
+		this.renderer.setScissor( //设置渲染器的视口
+			this.sizes.width - this.sizes.width / 3, 
+			this.sizes.height - this.sizes.height / 3, 
+			this.sizes.width / 3, 
+			this.sizes.height / 3
+		)
+
+		this.renderer.render(this.scene, this.camera.perspectiveCamera) //👀显示右上角小场景，将场景和相机传给渲染器。渲染器会根据相机的视角渲染场景，并将渲染结果显示在屏幕上
+		// this.renderer.render(this.scene, this.camera.orthographicCamera) //👀显示右上角小场景，将场景和相机传给渲染器。渲染器会根据相机的视角渲染场景，并将渲染结果显示在屏幕上
+		this.renderer.setScissorTest(false) 
+		
 	}
 }
