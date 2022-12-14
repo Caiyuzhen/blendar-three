@@ -9,6 +9,7 @@ import Room from './Room'
 import {EventEmitter} from 'events' 
 import Environment from './Environment' //灯光环境
 import Controls from './Controls'
+import Floor from './Floor' //🏓导入新物体第一步
 
 
 export default class World {
@@ -21,6 +22,7 @@ export default class World {
 	public resources: Resources //资源
 	public environment!: Environment //灯光环境
 	public room!: Room //房间
+	public floor!: Floor //🏓导入新物体第二步
 	public controls!: Controls
 
 
@@ -40,8 +42,9 @@ export default class World {
 		*/
 		this.resources.on("ready", ()=>{
 			this.environment = new Environment() //创建一个灯光环境
-			this.room = new Room() //创建一个房间
-			this.controls = new Controls()
+			this.room = new Room() //创建一个房间 
+			this.floor = new Floor() ////🏓导入新物体第三步
+			this.controls = new Controls() //曲线, 控制相机的运动方向
 			// console.log(this.scene);
 		})
 	}

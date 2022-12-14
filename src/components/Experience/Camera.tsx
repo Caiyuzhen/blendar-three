@@ -64,16 +64,15 @@ export default class Camera {
 			(this.sizes.aspect * this.frustumSize) / 2,
 			this.sizes.frustumSize / 2,
 			- this.sizes.frustumSize / 2,
-			-10,
-			10,
+			-50,
+			50,
 		)
 		// ————
 
 		// 🔥更新正交相机的位置
-		this.orthographicCamera.position.y = 1.5
-		this.orthographicCamera.position.z = 1
+		this.orthographicCamera.position.y = 4
+		this.orthographicCamera.position.z = 5
 		this.orthographicCamera.rotation.x =  -Math.PI / 6
-
 
 		// console.log(this.frustumSize)
 		// console.log(this.orthographicCamera);
@@ -82,17 +81,19 @@ export default class Camera {
 
 
 		// 正交相机的方向 helper, 用来调试相机的方向, 记得最后得在 update() 中持续更新
-		this.helper = new THREE.CameraHelper(this.orthographicCamera);
-        this.scene.add(this.helper);
+		// this.helper = new THREE.CameraHelper(this.orthographicCamera);
+        // this.scene.add(this.helper);
 
 		
 		// 创建网格辅助器（地面网格）
-		const size = 10
-		const divisions = 10
-		const gridHelper = new THREE.GridHelper(size, divisions)
-		this.scene.add(gridHelper)
-		const axesHelper = new THREE.AxesHelper(10)
-		this.scene.add(axesHelper)
+		// const size = 10
+		// const divisions = 10
+		// const gridHelper = new THREE.GridHelper(size, divisions)
+		// this.scene.add(gridHelper)
+
+		// 创建坐标轴辅助器
+		// const axesHelper = new THREE.AxesHelper(10)
+		// this.scene.add(axesHelper)
 	}
 
 
@@ -116,14 +117,15 @@ export default class Camera {
 		this.orthographicCamera.updateProjectionMatrix()//更新投影矩阵
 	}
 
+
 	// 更新相机的位置（轨道）
 	update() {
 		// console.log(this.perspectiveCamera.position); //打印出透视（3/4）相机的位置
 		this.controls.update()
 
-		this.helper.matrixWorldNeedsUpdate = true //持续更新相机的方向
-		this.helper.update()
-		this.helper.position.copy(this.orthographicCamera.position) //持续更新相机的位置
-		this.helper.rotation.copy(this.orthographicCamera.rotation) //持续更新相机的位置
+		// this.helper.matrixWorldNeedsUpdate = true //持续更新相机的方向
+		// this.helper.update()
+		// this.helper.position.copy(this.orthographicCamera.position) //持续更新相机的位置
+		// this.helper.rotation.copy(this.orthographicCamera.rotation) //持续更新相机的位置
 	}
 }
