@@ -57,7 +57,7 @@ export default class Room {
 			// console.log(e); //利用 ClientX 和 ClientY 来获取鼠标距离浏览器左上角的距离
 			this.rotation = (e.clientX - window.innerWidth / 2 ) / (window.innerWidth / 2)//🔥比率 = 计算鼠标离浏览器中心点 X 轴的距离 / 整个浏览器的宽度的一半！
 			// -730 <- 0 -> 730, 相当于先计算出来鼠标离浏览器中心点 X 轴的距离, 然后再除以整个浏览器的宽度的 1/2 , 最后得到一个比率, 距离中心点多远
-			console.log(this.rotation);
+			// console.log(this.rotation);
 
 			this.lerp.target = this.rotation * 0.2//👀📹把摄像机的目标旋转位置设置为鼠标移动的距离 * 一定的数值表示减少旋转的幅度
 		})

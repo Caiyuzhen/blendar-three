@@ -25,12 +25,17 @@ export default class Environment {
 		this.sunLight = new THREE.DirectionalLight("#ffffff", 3);
         this.sunLight.castShadow = true; //开启阴影
         this.sunLight.shadow.camera.far = 20; 
-        this.sunLight.shadow.mapSize.set(4096, 4096); //影响阴影的质量
+        this.sunLight.shadow.mapSize.set(2048, 2048); //影响阴影的质量
         this.sunLight.shadow.normalBias = 0.05; //影响阴影的模糊程度
 		this.sunLight.position.set(1.5, 8, 3) //光照的位置 
 		this.scene.add(this.sunLight) //🌞将光照添加到场景中
 
 		
+		//环境光 - 不可以投射阴影
+		this.ambientLight = new THREE.AmbientLight('#fffdf9', 0.8) //环境光照的颜色跟强度
+		this.scene.add(this.ambientLight) //🌞将环境光照添加到场景中 
+
+				
 		// 相机的方向 helper
 		// const helper = new THREE.CameraHelper(this.sunLight.shadow.camera);
         // this.scene.add(helper);
@@ -45,13 +50,6 @@ export default class Environment {
 		// spotLight.shadow.camera.near = 40;
 		// spotLight.shadow.camera.far = 130;
 		// this.scene.add(spotLight);
-
-
-		//环境光 - 不可以投射阴影
-		this.ambientLight = new THREE.AmbientLight('#fffdf9', 0.8) //环境光照的颜色跟强度
-		this.scene.add(this.ambientLight) //🌞将环境光照添加到场景中 
-
-
 	}
 
 	resize() {
