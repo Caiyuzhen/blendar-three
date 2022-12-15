@@ -1,9 +1,26 @@
+/* 引入 Montserrat 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
+html, body {
+	/* 统一增加字体样式 */
+	font-family: "Montserrat", sans-serif; 
+	/* 如果没 Montserrat 字体, 就显示为 sans-serif */
+}
+
+:root {
+	--text-black: #333332;
+	--primary-color:#FAF4E5;
+	--primary-pink: #e5a1aa;
+}
+
+
+/* experience ———————————————————————————————————— */
 .experience {
 	position:fixed;
 	width: 100vw;	
@@ -14,4 +31,79 @@
 	width: 100%;
 	height: 100%;
 }
+
+
+
+/* page ItSelf ———————————————————————————————————— */
+.page {
+	z-index: 999999;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.page-wrapper {
+	position: relative;
+}
+
+
+
+/* section formatting ———————————————————————————————————— */
+.section-margin {
+	/* 🔥火称高底部的内容用 */
+	height: 3000px;
+}
+
+.section {
+	width: 50%;
+	/* 每组内容上下间隔 1000px */
+	padding: 1000px 4%;
+	margin: 0;
+	background-color: ();
+}
+
+
+
+
+/* hero section ———————————————————————————————————— */
+.hero {
+	width: 100vw;
+	height: 100vh;
+}
+
+.hero-wrapper {
+	position: relative;
+	width: calc(100% - 160px);
+	height: 100%;
+	margin: 0 auto;
+	max-width: 1200px;
+}
+
+/* 第一部分 */
+.hero-main {
+	position: absolute;
+	bottom: 168px;
+	left: 0;
+}
+
+.hero-main-title {
+	font-size: 64px;
+}
+
+.hero-main-description {
+	font-size: 18px;
+}
+
+/* 第二部分 */
+.hero-second {
+	position: absolute;
+	top: calc(50% - 120px);
+	right: 0;
+}
+
+.hero-second-subheading {
+	font-size: 32px;
+	text-transform: uppercase;
+}
+
 
