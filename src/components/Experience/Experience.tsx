@@ -12,7 +12,7 @@ import Assets from './utils/Assets'
 
 // ⚡️⚡️ 封装其他所有组件的能力, 返回单独的一个实例 （封装 api 的逻辑）
 export default class Experience {
-	public static instance: any //🔥单实例的模式, 把各种 class 的实例都放在 Experience 这里, 其他组件通过 Experience.instance 来获取实例
+	public static instance: Experience //单实例的模式, 把各种 class 的实例都放在 Experience 这里, 其他组件通过 Experience.instance 来获取实例
 	public canvas ? : HTMLCanvasElement //类里边的实例属性
 	public scene!: Scene   //THREE.Scene //类里边的实例属性
 	public time!: Time //类里边的实例属性
@@ -22,7 +22,6 @@ export default class Experience {
 	public resources!: Resources //类里边的实例属性
 	public world!: World //定义一个世界(所有模型都在 World 里边的 Home 进行实例化！)
 
-	
 	constructor(canvas? :HTMLCanvasElement) {
 		// console.log('Hey, 成功新建类型');
 

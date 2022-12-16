@@ -56,6 +56,8 @@ export const MainView = () => {
 					<section className="first-section section left">
 						<div className="section-intro-wrapper">
 							<h1 className="section-title">
+								{/* 标题 */}
+								<span className="section-title-text">About Me</span>
 								{/* 装饰物 */}
 								<div className="section-title-decoration styleOne"></div>
 								<div className="section-title-decoration styleTwo"></div>
@@ -64,6 +66,7 @@ export const MainView = () => {
 							<span className="section-number">01</span>
 						</div>
 
+						{/* 详细内容 */}
 						<div className="section-detail-wrapper">
 							<h3 className="section-heading">lorem ipsum</h3>
 							<p className="section-text">Hi there 👋! I'm a third-year digital media student from UK currently studying in Germany. My dream is to work for Disney or Pixar one day.</p>
@@ -79,6 +82,8 @@ export const MainView = () => {
 					<section className="second-section section right">
 						<div className="section-intro-wrapper">
 							<h1 className="section-title">
+								{/* 标题 */}
+								<span className="section-title-text">My Work</span>
 								{/* 装饰物 */}
 								<div className="section-title-decoration styleOne"></div>
 								<div className="section-title-decoration styleTwo"></div>
@@ -87,6 +92,7 @@ export const MainView = () => {
 							<span className="section-number">01</span>
 						</div>
 
+						{/* 详细内容 */}
 						<div className="section-detail-wrapper">
 							<h3 className="section-heading">lorem ipsum</h3>
 							<p className="section-text">Hi there 👋! I'm a third-year digital media student from UK currently studying in Germany. My dream is to work for Disney or Pixar one day.</p>

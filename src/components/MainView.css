@@ -11,6 +11,7 @@ html, body {
 	/* 统一增加字体样式 */
 	font-family: "Montserrat", sans-serif; 
 	/* 如果没 Montserrat 字体, 就显示为 sans-serif */
+	color: var(--text-black);
 }
 
 :root {
@@ -48,6 +49,26 @@ html, body {
 
 
 
+/* fancy Decoration Part of section ———————————————————————————————————— */
+.section-title {
+	position: relative;
+	color: var(--primary-color-pink)
+}
+
+.section-title-text {
+	/* 👇显示为 block 是必要条件！ */
+	display: block;
+	font-size:40px;
+	font-weight:500;
+	/* 修改中心点 */
+	transform-origin: left; 
+	/* 让字体斜着展示 */
+	transform: skewY(25deg); 
+	z-index: 5;
+	text-transform: uppercase;
+}
+
+
 /* section formatting ———————————————————————————————————— */
 .section-margin {
 	/* 🔥火称高底部的内容用 */
@@ -59,7 +80,41 @@ html, body {
 	/* 每组内容上下间隔 1000px */
 	padding: 1000px 4%;
 	margin: 0;
-	background-color: ();
+	background-color: var(--primary-color);
+}
+
+.left {
+	margin-right: auto;
+}
+
+.right {
+	margin-left: auto;
+}
+
+.section-intro-wrapper {
+	position: relative;
+	padding: 20% 5%;
+	border-bottom: 2px solid var(--primary-pink);
+	padding-bottom: 400px;
+}
+
+
+.section-detail-wrapper {
+	position: relative;
+	padding: 20% 5%;
+}
+
+.section-heading {
+	font-size: 18px;
+	font-weight: Bold;
+	line-height: 1.8;
+	margin-top: 64px;
+}
+
+.section-text {
+	line-height: 2;
+	margin-top: 18px;
+	font-size: 16px;
 }
 
 
