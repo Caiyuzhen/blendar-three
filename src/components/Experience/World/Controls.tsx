@@ -6,7 +6,11 @@ import { CatmullRomCurve3, Scene } from '../../../Types/ThreeTypes'
 import Experience from '../Experience'
 import { Vector3 } from 'three'
 import Camera from '../Camera'
+import Room from "./Room"
 import GSAP from 'gsap'
+import ScrollTrigger from "gsap"
+import Timeline from "gsap"
+
 
 
 
@@ -20,6 +24,9 @@ export default class Controls {
 	public curve!: CatmullRomCurve3
 	public dummyCurve!: Vector3 //曲线上的坐标点
 	public progress!: number
+	public room: Room
+	private registerPlguin!: ScrollTrigger
+	private timeline!: gsap.core.Timeline
 	// public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	// public position!: Vector3 //📹初始化时相机在曲线上的坐标点
 	// public back!: boolean //判断滚轮方向
@@ -32,13 +39,16 @@ export default class Controls {
 	// public crossVector: Vector3  //c 边 (最终算出来的角度方向)
 
 
-
 	constructor() {
 		this.experience = new Experience() //🔥🔥 new 的核心实例要放在最前面！下面的属性才能拿到！！ scene 要通过 experience 拿到 scene！不能单独 new 实例！不然会有多个 scene！
 		this.scene = this.experience.scene
 		this.time = this.experience.time
 		this.camera = this.experience.camera
 		this.resources = this.experience.resources
+		this.room = this.experience.world.room.actualRoom
+		GSAP.registerPlugin(ScrollTrigger)//注册 GSAP 上的一个插件
+		this.scrollPath() //🚗执行滚动的方法
+
 		// this.progress = 0 //相机的轨道
 		// this.dummyCurve = new THREE.Vector3(0, 0, 0) //曲线上的点
 		// this.back = false //判断滚轮方向
@@ -63,6 +73,14 @@ export default class Controls {
 
 		// this.setPath()// ⚡️先注释掉
 		// this.onWheel()// ⚡️当鼠标滚轮滚动时, 改变摄像机的视角（也就是改变 curve 的曲线）, 改变 progress
+	}
+
+
+	// 🌟滚动页面显示内容的方法
+	scrollPath() {
+		this.timeline = new GSAP.core.Timeline() //实例化方法
+		this.timeline.to()
+		// console.log(this.timeline);
 	}
 
 
