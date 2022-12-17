@@ -5,15 +5,19 @@ import './MainView.css'
 
 export const MainView = () => {
 
-	// ref 获取 experience-canvas 元素
+	// ref 获取 experience-canvas 元素, 传入 Experience
 	const canvasRef = useRef<HTMLCanvasElement>(null)
+
+	// ref 获取 GSAP 要判断的 HTML 元素, 传入 Experience
+	const firstMoveRef = useRef<HTMLDivElement>(null)
+
 
 	// 根据 class new 一个实例
 	useEffect(() => {
 		if (!canvasRef.current) {
 			return
 		}
-		const experience = new Experience(canvasRef.current!) //实际的 new 一个实例
+		const experience = new Experience(canvasRef.current!, firstMoveRef.current!) //new 一个 experience 实例, 传入两个 html 元素
 		// content
 		return () => {
 			// clearEffect
@@ -48,8 +52,8 @@ export const MainView = () => {
 					</section>
 
 
-					{/* 🔥🔥为了把底部的内容称高用 */}
-					<div className="section-margin"></div>
+					{/* 🔥🔥为了把底部的内容称高用, 此外也作为 GSAP 动画库的 trigger, 当滚动到此处时就显示动画！ */}
+					<div className="first-move section-margin" ref={firstMoveRef}></div>
 
 
 					{/* 第一部分 */}
@@ -76,6 +80,10 @@ export const MainView = () => {
 							<p className="section-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic expedita qui quae officiis, magni velit iste repellat consequuntur temporibus. Quasi atque officia iste beatae rerum, harum itaque accusamus. At, natus?</p>
 						</div>
 					</section>
+
+
+					{/* 🔥🔥为了把底部的内容称高用, 此外也作为 GSAP 动画库的 trigger, 当滚动到此处时就显示动画！ */}
+					<div className="second-move section-margin"></div>
 
 
 					{/* 第二部分 */}

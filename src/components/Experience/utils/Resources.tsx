@@ -70,6 +70,7 @@ export default class Resources extends EventEmitter {
 		}
 	}
 
+
 	singleAssetLoaded(asset: IAsset, file: any) {
 		this.items[asset.name] = file //通过键值对的方式获取对应的 path 文件, 收集到 items 内
 		this.loaded ++  //🔥加载器的数量
@@ -77,8 +78,8 @@ export default class Resources extends EventEmitter {
 		// console.log('🚗资源加载中');
 
 		if(this.loaded === this.queue) { //如果加载器的数量等于资源队列的数量, 则说明所有资源都加载完毕
-			//🔥资源都加载好后，在 World 类里边触发 ready 事件
-			console.log('😄资源加载完毕', file);
+			//🔥资源都加载好后，在 World 类里边触发 ready 事件, world 内的触发会开启 resources 这里边的加载
+			console.log('😄World 触发了 ready 事件，资源加载完毕', file);
 			this.emit("ready")
 		}
 	}

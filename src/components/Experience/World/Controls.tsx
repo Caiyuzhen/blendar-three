@@ -8,7 +8,9 @@ import { Vector3 } from 'three'
 import Camera from '../Camera'
 import Room from "./Room"
 import GSAP from 'gsap'
-import ScrollTrigger from "gsap"
+import Sizes from '../utils/Size'
+// import ScrollTrigger from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import Timeline from "gsap"
 
 
@@ -24,9 +26,10 @@ export default class Controls {
 	public curve!: CatmullRomCurve3
 	public dummyCurve!: Vector3 //曲线上的坐标点
 	public progress!: number
-	public room: Room
-	private registerPlguin!: ScrollTrigger
-	private timeline!: gsap.core.Timeline
+	public room: Scene //因为 Room 内的物体是挂载到 scene 上的 -> this.actualRoom = this.room.scene 
+	readonly sizes: Sizes
+	public firstEle: HTMLDivElement
+	public timeline!: gsap.core.Timeline
 	// public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	// public position!: Vector3 //📹初始化时相机在曲线上的坐标点
 	// public back!: boolean //判断滚轮方向
@@ -45,8 +48,11 @@ export default class Controls {
 		this.time = this.experience.time
 		this.camera = this.experience.camera
 		this.resources = this.experience.resources
-		this.room = this.experience.world.room.actualRoom
-		GSAP.registerPlugin(ScrollTrigger)//注册 GSAP 上的一个插件
+		this.room = this.experience.world.room.actualRoom //通过 world 内的 this.resources.on("ready", ()=>{...}) 触发 resource 加载资源的事件
+		this.sizes = this.experience.sizes
+		this.firstEle = this.experience.firstEle //获取 HTML 元素
+		GSAP.registerPlugin(ScrollTrigger) //注册 GSAP 上的一个插件
+		this.timeline = new GSAP.core.Timeline() ////调用 GSAP 的 timeline 库, 进行实例化
 		this.scrollPath() //🚗执行滚动的方法
 
 		// this.progress = 0 //相机的轨道
@@ -78,8 +84,25 @@ export default class Controls {
 
 	// 🌟滚动页面显示内容的方法
 	scrollPath() {
-		this.timeline = new GSAP.core.Timeline() //实例化方法
-		this.timeline.to()
+		// console.log(this.room);
+		this.timeline.to(this.room.position, {
+			// x: 1.5, //向右位移 (写死的方式)
+			// x: this.sizes.width *0.0008, //让位移根据页面尺寸来计算
+			x: () => {
+				return this.sizes.width * 0.00119 //响应式的方式（需要结合下面开启 invalidateOnRefresh）, 让位移根据页面尺寸来计算, 并且能够随着页面的拖动而更新
+			},
+
+			// duration: 20, //位移 20 秒
+			scrollTrigger: {
+				// trigger: ".firsr-mov",//⚡️触发条件, 当这个元素出现后意味着动画结束(普通 js 内的用法)
+				trigger: this.firstEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
+				markers: true,
+				start: "top top",
+				end: "bottom bottom",
+				scrub: 0.8, //0.1 、 true ...
+				invalidateOnRefresh: true,
+			}
+		})
 		// console.log(this.timeline);
 	}
 

@@ -4,7 +4,7 @@ import Experience from '../Experience'
 import {Scene} from '../../../Types/ThreeTypes'
 
 
-
+// 地板元素，用于显示地面投影
 export default class Floor {
 	public experience: Experience
 	public scene: Scene
@@ -29,7 +29,7 @@ export default class Floor {
 		this.plane = new THREE.Mesh(this.geometry, this.material)
 		this.scene.add(this.plane)  //添加进场景内
 		this.plane.rotation.x = Math.PI / 2  //把物体旋转 90 度
-		this.plane.position.y = -0.3 //把物体往下位移
+		this.plane.position.y = -0.1 //把地板往下位移
 		
 		this.plane.receiveShadow = true //让物体接收阴影的渲染
 

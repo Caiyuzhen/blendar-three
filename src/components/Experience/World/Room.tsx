@@ -29,7 +29,7 @@ export default class Room {
 		this.resources = this.experience.resources
 		this.time = this.experience.time
 		this.room = this.resources.items.room //⚡️通过 resources 获取到 room 的 3D 物体
-		this.actualRoom = this.room.scene //真正想要展示在 ROOM 内的 3D 物体  // console.log(this.actualRoom); //真正想要展示在 ROOM 内的 3D 物体
+		this.actualRoom = this.room.scene //🔥最终真正想要展示在 ROOM 内的 3D 物体  // console.log(this.actualRoom); //真正想要展示在 ROOM 内的 3D 物体
 		// 👋一: 定义控制房屋旋转的参数
 		this.lerp = {
 			current: 0, //指定当前值
@@ -105,8 +105,9 @@ export default class Room {
 		}
 		
 		this.scene.add(this.actualRoom)
-		this.actualRoom.scale.set(0.15, 0.15, 0.15) //缩放房间内的物体
+		this.actualRoom.scale.set(0.12, 0.12, 0.12) //缩放房间内的物体
 		this.actualRoom.rotation.y = Math.PI / 8 //旋转房间内的物体
+		this.actualRoom.position.y = 0.3 //🏠房子距离地面的高度
 	}
 
 

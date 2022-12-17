@@ -37,7 +37,7 @@ export default class World {
 		// console.log('资源:', this.experience.resources) 
 
 		/*
-			🔥等资源都加载好后，👇统一在 World 类里边触发 ready 事件
+			🔥等资源都加载好后，👇统一在 World 类里边触发 ready 事件, 让 resources 内的事件开始执行
 			创建一个房间 （🔥🔥world 一定义放最后面！不然获取不到 resources!）
 		*/
 		this.resources.on("ready", ()=>{

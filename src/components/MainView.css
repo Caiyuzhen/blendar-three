@@ -71,8 +71,8 @@ html, body {
 
 /* section formatting ———————————————————————————————————— */
 .section-margin {
-	/* 🔥火称高底部的内容用 */
-	height: 3000px;
+	/* 🔥称高底部的内容用 */
+	height: 2000px;
 }
 
 .section {
@@ -81,6 +81,9 @@ html, body {
 	padding: 1000px 4%;
 	margin: 0;
 	background-color: var(--primary-color);
+	/* 右圆角 */
+	/* border-top-right-radius: 28px; */
+	border-radius: 28px;
 }
 
 .left {
