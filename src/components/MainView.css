@@ -18,6 +18,7 @@ html, body {
 	--text-black: #333332;
 	--primary-color:#FAF4E5;
 	--primary-pink: #e5a1aa;
+	--size: 28px;
 }
 
 
@@ -48,11 +49,144 @@ html, body {
 }
 
 
+/* 开关 toggle Bar */
+.toggle-bar {
+	position: fixed;
+	display: flex;
+	gap: 20px;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	top: 48px;
+	right: 48px;
+	z-index: 9999999999999;
+}
 
-/* fancy Decoration Part of section ———————————————————————————————————— */
+.sun-wrapper, 
+.moon-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.toggle-button  {
+	/* --size: 28px; */
+	position: relative;
+	background: linear-gradient(90deg, #f19af3, #f099b5);
+	line-height: 0;
+	perspective: 400px;
+	font-size: var(--size);
+}
+
+.toggle-button  input[type="checkbox"],
+.toggle-button  label,
+.toggle-button  label::before,
+.toggle-button  label::after,
+.toggle-button  {
+	appearance: none;
+	display: inline-block;
+	border-radius: var(--size);
+	border: 0;
+	transition: .35s ease-in-out;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.toggle-button  label {
+	/* 按钮宽度 */
+	width: calc(2.2 * var(--size));
+	height: var(--size);
+	background: #d7d7d7;
+	overflow: hidden;
+}
+
+.toggle-button  input[type="checkbox"] {
+	position: absolute;
+	z-index: 1;
+	width: calc(.8 * var(--size));
+	height: calc(.8 * var(--size));
+	top: calc(.1 * var(--size));
+	left: calc(.1 * var(--size));
+	background: linear-gradient(45deg, #dedede, #ffffff);
+	box-shadow: 0 6px 7px rgba(0,0,0,0.3);
+	outline: none;
+	margin: 0;
+}
+
+  .toggle-button  input[type="checkbox"]:checked {
+	left: calc(1.3 * var(--size));
+}
+
+  .toggle-button  input[type="checkbox"]:checked + label {
+	background: transparent;
+}
+
+.toggle-button  label::before,
+.toggle-button  label::after {
+	/* 眼睛 */
+	content: "· ·";
+	position: absolute;
+	overflow: hidden;
+	left: calc(.15 * var(--size));
+	top: calc(.5 * var(--size));
+	height: var(--size);
+	letter-spacing: calc(-0.04 * var(--size));
+	color: #9b9b9b;
+	font-family: "Times New Roman", serif;
+	z-index: 2;
+	font-size: calc(.6 * var(--size));
+	border-radius: 0;
+	transform-origin: 0 0 calc(-0.5 * var(--size));
+	backface-visibility: hidden;
+}
+
+/* 嘴 */
+.toggle-button  label::after {
+	content: "●";
+	top: calc(.65 * var(--size));
+	left: calc(0.25 * var(--size));
+	height: calc(.1 * var(--size));
+	width: calc(.35 * var(--size));
+	font-size: calc(0.2 * var(--size));
+	transform-origin: 0 0 calc(-0.4 * var(--size));
+}
+
+.toggle-button  input[type="checkbox"]:checked + label::before,
+.toggle-button  input[type="checkbox"]:checked + label::after {
+	left: calc(1.55 * var(--size));
+	top: calc(.4 * var(--size));
+	line-height: calc(.1 * var(--size));
+	transform: rotateY(360deg);
+}
+
+.toggle-button  input[type="checkbox"]:checked + label::after {
+	height: calc(.16 * var(--size));
+	top: calc(.55 * var(--size));
+	left: calc(1.6 * var(--size));
+	font-size: calc(.6 * var(--size));
+	line-height: 0;
+}
+
+
+
+/* 另一种写法, 给 toggle 添加一个 slides 类，点击时赋予这个类 */
+.slides {
+	left: 124px;
+}
+
+/* #toggle-circle {
+	width: 50px;
+} */
+
+
+
+/* 装饰标题 fancy Decoration Part of section ———————————————————————————————————— */
 .section-title {
 	position: relative;
-	color: var(--primary-color-pink)
+	color: var(--primary-color-pink);
+	z-index: 5;
 }
 
 .section-title-text {
@@ -64,9 +198,9 @@ html, body {
 	transform-origin: left; 
 	/* 让字体斜着展示 */
 	transform: skewY(25deg); 
-	z-index: 5;
 	text-transform: uppercase;
 }
+
 
 
 /* section formatting ———————————————————————————————————— */
@@ -205,3 +339,34 @@ html, body {
 }
 
 
+
+
+
+
+/* 🚮 Trash ———————————————————————————————————— */
+/* .toggle-circle {
+	position: absolute;
+	left: 3.5px;
+	top: 2.5px;
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	background-color: var(--primary-color);
+	transition: all 0.2s ease-in-out;
+}
+
+
+.toggle-button {
+	cursor: pointer;
+	position: relative;
+	width: 58px;
+	height: 28px;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--primary-pink);
+	border-radius: 999px;
+	margin: 0px 16px;
+	border: none;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+   */

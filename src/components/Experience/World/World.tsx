@@ -5,6 +5,7 @@ import Sizes from '../utils/Size'
 import Camera from '../Camera'
 import {Scene, WebGLRenderer} from '../../../Types/ThreeTypes'
 import Resources from '../utils/Resources'
+import Theme from '../Theme'
 import Room from './Room'
 import {EventEmitter} from 'events' 
 import Environment from './Environment' //灯光环境
@@ -20,6 +21,7 @@ export default class World {
 	public camera: Camera //相机
 	public renderer!: WebGLRenderer //渲染器 // THREE.WebGLRenderer 
 	public resources: Resources //资源
+	public theme: Theme //主题
 	public environment!: Environment //灯光环境
 	public room!: Room //房间
 	public floor!: Floor //🏓导入新物体第二步
@@ -34,10 +36,10 @@ export default class World {
 		this.canvas = this.experience.canvas
 		this.camera	= this.experience.camera
 		this.resources = this.experience.resources
+		this.theme = this.experience.theme
 		// console.log('资源:', this.experience.resources) 
 
-		/*
-			🔥等资源都加载好后，👇统一在 World 类里边触发 ready 事件, 让 resources 内的事件开始执行
+		/*⚡️⚡️利用 event 库， 等资源都加载好后，👇统一在 World 类里边触发 ready 事件, 让 resources 内的事件开始执行
 			创建一个房间 （🔥🔥world 一定义放最后面！不然获取不到 resources!）
 		*/
 		this.resources.on("ready", ()=>{
@@ -47,6 +49,19 @@ export default class World {
 			this.controls = new Controls() //曲线, 控制相机的运动方向
 			// console.log(this.scene);
 		})
+
+		 //⚡️⚡️利用 event 库接收 Theme 组件内的 switch 事件以及事件参数！
+		this.theme.on('switch', (theme: string) => {
+			this.switchTheme(theme)
+		})
+	}
+
+
+	// 🌞切换主题色的方法, 本质上是再去调用 Environment 组件内的 switchTheme 方法
+	switchTheme(theme: string) {
+		if(this.environment) {
+			this.environment.switchTheme(theme) //因为需要直接改 environment 的属性
+		}
 	}
 
 

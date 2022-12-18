@@ -16,7 +16,7 @@ import Timeline from "gsap"
 
 
 
-// ⚡️⚡️ 封装其他所有组件的能力, 返回单独的一个实例 （封装 api 的逻辑）
+// ⚡️核心是用于控制页面的滚动动画以及相机的移动曲线
 export default class Controls {
 	public experience!: Experience //⚡️记得先后顺序！Experience 放在 Resources 前边！！
 	public scene: Scene
@@ -50,7 +50,7 @@ export default class Controls {
 		this.resources = this.experience.resources
 		this.room = this.experience.world.room.actualRoom //通过 world 内的 this.resources.on("ready", ()=>{...}) 触发 resource 加载资源的事件
 		this.sizes = this.experience.sizes
-		this.firstEle = this.experience.firstEle //获取 HTML 元素
+		this.firstEle = this.experience.firstEle //获取 HTML 元素, 用于判断 GSAP 加载动画的位置
 		GSAP.registerPlugin(ScrollTrigger) //注册 GSAP 上的一个插件
 		this.timeline = new GSAP.core.Timeline() ////调用 GSAP 的 timeline 库, 进行实例化
 		this.scrollPath() //🚗执行滚动的方法

@@ -3,6 +3,19 @@ import * as THREE from 'three'
 import Experience from '../Experience'
 import {Scene} from '../../../Types/ThreeTypes'
 import Resources from '../utils/Resources'
+import GSAP from 'gsap'
+import GUI from 'lil-gui'
+import { Color } from 'three'
+
+
+// interface Obj {
+// 	colorObj: {
+// 	  r: number,
+// 	  g: number,
+// 	  b: number,
+// 	},
+// 	intensity: number,
+// }
 
 
 // 环境光照
@@ -11,14 +24,48 @@ export default class Environment {
 	public scene: Scene
 	public resources: Resources
 	public sunLight!: THREE.DirectionalLight
+	private gui: GUI
+	private obj: any
 	public ambientLight!: THREE.AmbientLight
+	
+
 
 	constructor() {
 		this.experience = new Experience()
 		this.scene = this.experience.scene
 		this.resources = this.experience.resources
+
+		// 🌍 gui 库
+		this.gui = new GUI()
+		this.obj = {
+			colorObj: {r: 0,g: 0,b: 0},
+			intensity: 3, //强度
+		}
+
+		this.setGUI()
 		this.setSunLight()
 	}
+
+
+	// 🌍 gui 库, 把定义的 obj 颜色映射拷贝给【太阳光】跟【环境光】
+	setGUI() {
+		this.gui.addColor(this.obj, 'colorObj').onChange(() => {
+			this.sunLight.color.copy(this.obj.colorObj)
+			this.ambientLight.color.copy(this.obj.colorObj)
+			// console.log(
+			// 	"color 的值:",
+			// 	this.color, '\n', //换行的方法
+			// 	"colorObj 的值:",
+			// 	this.obj.colorObj
+			// )
+		})
+
+		this.gui.add(this.obj, 'intensity', 0, 10).onChange(() => { //设置强度（0～10）
+			this.sunLight.intensity = this.obj.intensity
+			this.ambientLight.intensity = this.obj.intensity
+		}) 
+	}
+
 
 	setSunLight() {
 		//方向光 - 该光源可以投射阴影
@@ -51,6 +98,39 @@ export default class Environment {
 		// spotLight.shadow.camera.far = 130;
 		// this.scene.add(spotLight);
 	}
+
+
+	// ⚡️在上 World 组件内去调用 Environment 组件的 switchTheme 方法
+	switchTheme(theme: string) {
+		if(theme === 'dark') {
+			// 改变太阳光的颜色, GSAP.to能直接平滑过渡过去
+			GSAP.to(this.sunLight.color, {
+				r: 0,
+				g: 0,
+				b: 0,
+			})
+			// 改变环境光的颜色
+			GSAP.to(this.ambientLight.color, {
+				r: 0,
+				g: 0,
+				b: 0,
+			})
+		} else {
+			// 改变太阳光的颜色, GSAP.to能直接平滑过渡过去
+			GSAP.to(this.sunLight.color, {
+				r: 255,
+				g: 255,
+				b: 255,
+			})
+			// 改变环境光的颜色
+			GSAP.to(this.ambientLight.color, {
+				r: 255,
+				g: 255,
+				b: 255,
+			})
+		}
+	}
+
 
 	resize() {
 
