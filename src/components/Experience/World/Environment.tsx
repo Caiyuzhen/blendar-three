@@ -24,8 +24,9 @@ export default class Environment {
 	public scene: Scene
 	public resources: Resources
 	public sunLight!: THREE.DirectionalLight
+	private guiDOM: any
 	private gui: GUI
-	private obj: any
+	private obj: any //继承 Three 的 Color 的话会有类型问题
 	public ambientLight!: THREE.AmbientLight
 	
 
@@ -36,9 +37,9 @@ export default class Environment {
 		this.resources = this.experience.resources
 
 		// 🌍 gui 库
-		this.gui = new GUI()
+		this.gui = new GUI() //里边可以传入另一个参数, 调整显示位置{ container:document.getElementById('#XXX') }
 		this.obj = {
-			colorObj: {r: 0,g: 0,b: 0},
+			colorObj: {r: 0,g: 0,b: 0}, //sunLight 跟 ambientLight 的都会用到的颜色
 			intensity: 3, //强度
 		}
 
@@ -52,6 +53,7 @@ export default class Environment {
 		this.gui.addColor(this.obj, 'colorObj').onChange(() => {
 			this.sunLight.color.copy(this.obj.colorObj)
 			this.ambientLight.color.copy(this.obj.colorObj)
+			console.log(this.obj.colorObj)
 			// console.log(
 			// 	"color 的值:",
 			// 	this.color, '\n', //换行的方法
@@ -105,28 +107,40 @@ export default class Environment {
 		if(theme === 'dark') {
 			// 改变太阳光的颜色, GSAP.to能直接平滑过渡过去
 			GSAP.to(this.sunLight.color, {
-				r: 0,
-				g: 0,
-				b: 0,
+				r: 0.182,
+				g: 0.242,
+				b: 0.686,
+			})
+			GSAP.to(this.sunLight, {
+				intensity: 0.78
 			})
 			// 改变环境光的颜色
-			GSAP.to(this.ambientLight.color, {
-				r: 0,
-				g: 0,
-				b: 0,
+			GSAP.to(this.ambientLight.color, { //强度
+				r: 0.182,
+				g: 0.242,
+				b: 0.686,
+			})
+			GSAP.to(this.ambientLight, { //强度
+				intensity: 0.78
 			})
 		} else {
 			// 改变太阳光的颜色, GSAP.to能直接平滑过渡过去
 			GSAP.to(this.sunLight.color, {
-				r: 255,
-				g: 255,
-				b: 255,
+				r: 255 / 255,
+				g: 255 / 255,
+				b: 255 / 255,
+			})
+			GSAP.to(this.sunLight, { //强度
+				intensity: 3
 			})
 			// 改变环境光的颜色
 			GSAP.to(this.ambientLight.color, {
-				r: 255,
-				g: 255,
-				b: 255,
+				r: 255 / 255,
+				g: 255 / 255,
+				b: 255 / 255,
+			})
+			GSAP.to(this.sunLight, { //强度
+				intensity: 3
 			})
 		}
 	}
