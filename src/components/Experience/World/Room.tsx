@@ -22,7 +22,7 @@ export default class Room {
 	private animations: any
 	public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	public rotation!: number //计算鼠标移动的距离, 从而改变房屋的旋转角度
-	mouse: { mouseX: number; mouseY: number }
+	// mouse: { mouseX: number; mouseY: number }
 
 
 
@@ -43,16 +43,16 @@ export default class Room {
 
 		this.rotation = 0
 
-		// 定义 mouse
-		this.mouse = {
-			mouseX: 0,
-			mouseY: 0
-		}
+		// // 定义 mouse
+		// this.mouse = {
+		// 	mouseX: 0,
+		// 	mouseY: 0
+		// }
 
 		this.setModel()//把 3D 物体添加到场景中
 		this.setAnimation() //设置（🐟鱼游泳）的动画
 		this.onMouseMove() //鼠标移动事件, 控制房屋的旋转
-		this.onMouseLight()
+		// this.onMouseLight()
 
 		// 添加一些基础立方体（测试）
 		// const geometry = new THREE.BoxGeometry(1, 1, 1)
@@ -118,10 +118,13 @@ export default class Room {
 
 		// 💡新打一盏区域灯光(在深色模式下能更明亮) 也可以做手电筒效果，跟随鼠标移动
 		const width = 1
-		const height = 1
+		const height = 0.6
 		const intensity = 1
 		const rectLight = new THREE.RectAreaLight(0xffffff, intensity, width, height)
-		rectLight.position.set( 0, 0, 0 )
+		rectLight.position.set( 8, 7, -0.6 ) // 参考 blendar 的坐标系
+		rectLight.rotation.x = -Math.PI / 2
+		rectLight.rotation.z = -Math.PI / 4
+		// rectLight.position.set( 0, 0, 0 )
 		// rectLight.lookAt( 0, 0, 0 )
 		this.actualRoom.add(rectLight)  // 👀添加到实际的物体（actualRoom) 上 // 👀this.scene.add( rectLight ) //则是添加到整个场景
 		
@@ -138,24 +141,24 @@ export default class Room {
 
 
 	// 🔦鼠标灯照效果(没做完, 先试试)
-	onMouseLight() {
-		const width = 1
-		const height = 1
-		const intensity = 1
-		const rectLight = new THREE.RectAreaLight(0xffffff, intensity, width, height)
+	// onMouseLight() {
+	// 	const width = 1
+	// 	const height = 1
+	// 	const intensity = 1
+	// 	const rectLight = new THREE.RectAreaLight(0xffffff, intensity, width, height)
 
-		// 获取鼠标的坐标
-		window.addEventListener('mousemove', (e)=>{
-			this.mouse.mouseX = e.clientX - window.innerWidth / 2
-			this.mouse.mouseY = e.clientY - window.innerHeight / 2 -74
-			console.log(this.mouse.mouseX, this.mouse.mouseY);
-			// console.log(this.actualRoom.position.x, this.actualRoom.position.y, this.actualRoom.position.z);
-			setInterval(()=>{
-				rectLight.position.set( this.mouse.mouseX, this.mouse.mouseY, this.mouse.mouseY )
-				this.actualRoom.add(rectLight)
-			},20)
-		})
-	}
+	// 	// 获取鼠标的坐标
+	// 	window.addEventListener('mousemove', (e)=>{
+	// 		this.mouse.mouseX = e.clientX - window.innerWidth / 2
+	// 		this.mouse.mouseY = e.clientY - window.innerHeight / 2 -74
+	// 		console.log(this.mouse.mouseX, this.mouse.mouseY);
+	// 		// console.log(this.actualRoom.position.x, this.actualRoom.position.y, this.actualRoom.position.z);
+	// 		setInterval(()=>{
+	// 			rectLight.position.set( this.mouse.mouseX, this.mouse.mouseY, this.mouse.mouseY )
+	// 			this.actualRoom.add(rectLight)
+	// 		},20)
+	// 	})
+	// }
 
 
 

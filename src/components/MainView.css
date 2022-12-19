@@ -7,6 +7,8 @@
 	box-sizing: border-box;
 }
 
+
+/* 🔥🔥深浅模式的做法：3.在 html 内赋予给上层标签，然后就可以一层层传递下去(js 内就是给到 body 标签） */
 html, body {
 	/* 统一增加字体样式 */
 	font-family: "Montserrat", sans-serif; 
@@ -14,12 +16,46 @@ html, body {
 	color: var(--text-black);
 }
 
+
+/* 🔥🔥深浅模式的做法：1.现在全局定义颜色 */
 :root {
 	--text-black: #333332;
 	--primary-color:#FAF4E5;
 	--primary-pink: #e5a1aa;
 	--size: 28px;
+
+
+	/* 🌞浅色模式 Light Theme mode */
+	--color-text-light: #333332;
+	--color-background-light: #FAF4E5;
+	--color-pink-light: #e5a1aa;
+	--color-green-light: #7AD0AC;
+	--color-blue-light: #8395CD;
+
+	/* 🌛深色模式 Dark Theme mode */
+	--color-text-dark: #FAF4E5;
+	--color-background-dark: #8395CD;
 }
+
+
+/* 🔥🔥切换深浅模式的做法: 2.定义两组 classList（然后再赋予给 body 标签）, 相当于全局声明了两个模式, 然后进行切换 */
+.light-theme {
+	--color-text: var(--color-text-light);
+	--color-background: var(--color-background-light);
+	--color-pink: var(--color-pink-light);
+	--color-green: var(--color-green-light);
+	--color-blue: var(--color-blue-light);
+}
+  
+.dark-theme {
+	--color-text: var(--color-text-dark);
+	--color-background: var(--color-background-dark);
+	--color-pink: var(--color-text-dark);
+	--color-green: var(--color-text-dark);
+	--color-blue: var(--color-text-dark);
+}
+
+
 
 
 /* experience ———————————————————————————————————— */
