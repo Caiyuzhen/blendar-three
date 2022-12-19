@@ -118,12 +118,12 @@ export default class Room {
 
 		// 💡新打一盏区域灯光(在深色模式下能更明亮) 也可以做手电筒效果，跟随鼠标移动
 		const width = 1
-		const height = 0.6
+		const height = 0.5
 		const intensity = 1
 		const rectLight = new THREE.RectAreaLight(0xffffff, intensity, width, height)
-		rectLight.position.set( 8, 7, -0.6 ) // 参考 blendar 的坐标系
+		rectLight.position.set( 7.6, 7, -0.1 ) // 参考 blendar 的坐标系
 		rectLight.rotation.x = -Math.PI / 2
-		rectLight.rotation.z = -Math.PI / 4
+		rectLight.rotation.z = -Math.PI / 4  - 0.04  //稍微修正一下
 		// rectLight.position.set( 0, 0, 0 )
 		// rectLight.lookAt( 0, 0, 0 )
 		this.actualRoom.add(rectLight)  // 👀添加到实际的物体（actualRoom) 上 // 👀this.scene.add( rectLight ) //则是添加到整个场景

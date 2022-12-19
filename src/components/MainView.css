@@ -16,6 +16,11 @@ html, body {
 	color: var(--text-black);
 }
 
+/* 偷懒，快速添加过渡属性, 让深浅色的切换更柔缓 */
+he, section, p, span, svg {
+	transition: all 0.3s ease-in-out;
+}
+
 
 /* 🔥🔥深浅模式的做法：1.现在全局定义颜色 */
 :root {
@@ -27,13 +32,13 @@ html, body {
 
 	/* 🌞浅色模式 Light Theme mode */
 	--color-text-light: #333332;
-	--color-background-light: #FAF4E5;
+	--color-background-light: #fff1cf;
 	--color-pink-light: #e5a1aa;
 	--color-green-light: #7AD0AC;
 	--color-blue-light: #8395CD;
 
 	/* 🌛深色模式 Dark Theme mode */
-	--color-text-dark: #FAF4E5;
+	--color-text-dark: #e9e5ff;
 	--color-background-dark: #8395CD;
 }
 
@@ -54,6 +59,7 @@ html, body {
 	--color-green: var(--color-text-dark);
 	--color-blue: var(--color-text-dark);
 }
+
 
 
 
@@ -98,12 +104,14 @@ html, body {
 	z-index: 9999999999999;
 }
 
+/* svg 图标, ⚡️⚡️要修改 svg 图标的填充色的话需要在 svg 标签内加上 fill="currentColor"  */
 .sun-wrapper, 
 .moon-wrapper {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	color: var(--color-text);
 }
 
 
@@ -178,7 +186,7 @@ html, body {
 	backface-visibility: hidden;
 }
 
-/* 嘴 */
+/* 切换按钮小头像的嘴 */
 .toggle-button  label::after {
 	content: "●";
 	top: calc(.65 * var(--size));
@@ -221,8 +229,8 @@ html, body {
 /* 装饰标题 fancy Decoration Part of section ———————————————————————————————————— */
 .section-title {
 	position: relative;
-	color: var(--primary-color-pink);
 	z-index: 5;
+	color: var(--color-text);
 }
 
 .section-title-text {
@@ -250,7 +258,7 @@ html, body {
 	/* 每组内容上下间隔 1000px */
 	padding: 1000px 4%;
 	margin: 0;
-	background-color: var(--primary-color);
+	background-color: var(--color-background);
 	/* 右圆角 */
 	/* border-top-right-radius: 28px; */
 	border-radius: 28px;
@@ -268,7 +276,7 @@ html, body {
 	position: relative;
 	padding: 20% 5%;
 	/* 底部分割线 */
-	border-bottom: 2px solid var(--primary-pink);
+	border-bottom: 2px solid var(--color-pink);
 	padding-bottom: 400px;
 }
 
@@ -283,12 +291,14 @@ html, body {
 	font-weight: Bold;
 	line-height: 1.8;
 	margin-top: 64px;
+	color: var(--color-text);
 }
 
 .section-text {
 	line-height: 2;
 	margin-top: 18px;
 	font-size: 16px;
+	color: var(--color-text);
 }
 
 .styleOne,
@@ -299,7 +309,7 @@ html, body {
 	max-width: 278px;
 	width: 100%;
 	height: 60px;
-	border: 1px solid var(--primary-pink);
+	border: 1px solid var(--color-pink);
 	/* 🔥改变旋转中心点 */
 	transform-origin: left;
 	/* 倾斜变形 */
@@ -317,7 +327,7 @@ html, body {
 .styleThree {
 	top: 80px;
 	/* 倾斜变形 */
-	background-color: var(--primary-pink);
+	background-color: var(--color-pink);
 	transform: skewY(25deg);
 }
 
@@ -325,7 +335,7 @@ html, body {
 	position: absolute;
 	bottom: 16px;
 	right: 0;
-	color: var(--primary-pink);
+	color: var(--color-pink);
 	font-weight: Bold;
 	font-size: 24px;
 }
@@ -352,14 +362,17 @@ html, body {
 	position: absolute;
 	bottom: 168px;
 	left: 0;
+	color: var(--color-text);
 }
 
 .hero-main-title {
 	font-size: 64px;
+	color: var(--color-text);
 }
 
 .hero-main-description {
 	font-size: 18px;
+	color: var(--color-text);
 }
 
 /* 第二部分 */
@@ -367,11 +380,42 @@ html, body {
 	position: absolute;
 	top: calc(50% - 120px);
 	right: 0;
+	color: var(--color-text);
 }
 
 .hero-second-subheading {
 	font-size: 32px;
 	text-transform: uppercase;
+}
+
+
+
+/* 覆盖上面的颜色 */
+.blue-text {
+	color: var(--color-blue);
+}
+
+.blue-border {
+	border-color: var(--color-blue);
+}
+
+.blue-background {
+	border-color: var(--color-blue);
+}
+
+
+
+
+.green-text {
+	color: var(--color-green);
+}
+
+.green-border {
+	border-color: var(--color-green);
+}
+
+.green-background {
+	border-color: var(--color-green);
 }
 
 
