@@ -20,7 +20,7 @@ export default class Theme extends EventEmitter{
 	// 获取并打印 body 标签
 	getBody() {
 		const body = document.querySelector('body')
-		console.log(body);
+		// console.log(body);
 	}
 
 

@@ -80,14 +80,14 @@ export const MainView = () => {
 
 						{/* 第一部分 —————————————————————————————————————— */}
 						<section className="first-section section left">
-							<div className="section-intro-wrapper">
+							<div className="section-intro-wrapper pink-border">
 								<h1 className="section-title">
 									{/* 标题 */}
 									<span className="section-title-text">About Me</span>
 									{/* 装饰物 */}
-									<div className="section-title-decoration styleOne"></div>
-									<div className="section-title-decoration styleTwo"></div>
-									<div className="section-title-decoration styleThree"></div>
+									<div className="section-title-decoration styleOne pink-border"></div>
+									<div className="section-title-decoration styleTwo pink-border"></div>
+									<div className="section-title-decoration styleThree pink-background  pink-border"></div>
 								</h1>
 								<span className="section-number">01</span>
 							</div>
@@ -110,7 +110,7 @@ export const MainView = () => {
 
 						{/* 第二部分 —————————————————————————————————————— */}
 						<section className="second-section section right">
-							<div className="section-intro-wrapper blue-text">
+							<div className="section-intro-wrapper blue-text blue-border">
 								<h1 className="section-title  blue-text  blue-border">
 									{/* 标题 */}
 									<span className="section-title-text">My Work</span>
@@ -140,7 +140,7 @@ export const MainView = () => {
 
 						{/* 第三部分 —————————————————————————————————————— */}
 						<section className="third-section section left">
-							<div className="section-intro-wrapper green-text">
+							<div className="section-intro-wrapper green-text green-border">
 								<h1 className="section-title green-text  green-border">
 									{/* 标题 */}
 									<span className="section-title-text">Contact Me</span>

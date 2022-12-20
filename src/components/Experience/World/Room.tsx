@@ -93,8 +93,9 @@ export default class Room {
 					})
 				}
 
-				// Blendar 中的命名, 水族箱
-				// console.log(child);
+				// 👀 查看下所有 blendar 的元素, Blendar 中的命名, 水族箱
+				console.log(child);
+
 				if(child.name === "Aquarium") {
 					child.material = new THREE.MeshPhysicalMaterial()
 					// console.log(child.children); //⚡️在 three.js 中，只有网格模型（THREE.Mesh）才具有材质属性，而 THREE.Group 并不拥有材质属性

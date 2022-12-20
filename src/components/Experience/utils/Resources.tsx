@@ -47,7 +47,7 @@ export default class Resources extends EventEmitter {
 				this.video = {} //video html 元素
 				this.videoTexture = {} //three.js 中的 videoTexture 配置
 
-				this.video[asset.name] = document.createElement('video') //创建 video 元素
+				this.video[asset.name] = document.createElement('video') //创建 video 元素, 用于存放视频资源
 				this.video[asset.name].src = asset.path
 				this.video[asset.name].muted = true
 				this.video[asset.name].playsInline = true

@@ -53,7 +53,7 @@ export default class Controls {
 		this.firstEle = this.experience.firstEle //获取 HTML 元素, 用于判断 GSAP 加载动画的位置
 		GSAP.registerPlugin(ScrollTrigger) //注册 GSAP 上的一个插件
 		this.timeline = new GSAP.core.Timeline() ////调用 GSAP 的 timeline 库, 进行实例化
-		this.scrollPath() //🚗执行滚动的方法
+		this.scrollTrigger() //🚗执行滚动的方法
 
 		// this.progress = 0 //相机的轨道
 		// this.dummyCurve = new THREE.Vector3(0, 0, 0) //曲线上的点
@@ -83,7 +83,7 @@ export default class Controls {
 
 
 	// 🌟滚动页面显示内容的方法
-	scrollPath() {
+	scrollTrigger() {
 		// console.log(this.room);
 		this.timeline.to(this.room.position, {
 			// x: 1.5, //向右位移 (写死的方式)

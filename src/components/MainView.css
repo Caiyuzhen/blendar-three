@@ -266,10 +266,14 @@ he, section, p, span, svg {
 
 .left {
 	margin-right: auto;
+	border-top-right-radius: 88px 88px;
+	border-bottom-right-radius: 88px 88px;
 }
 
 .right {
 	margin-left: auto;
+	border-top-left-radius: 88px 88px;
+	border-bottom-left-radius: 88px 88px;
 }
 
 .section-intro-wrapper {
@@ -301,6 +305,8 @@ he, section, p, span, svg {
 	color: var(--color-text);
 }
 
+
+/* 装饰 */
 .styleOne,
 .styleTwo,
 .styleThree {
@@ -339,6 +345,45 @@ he, section, p, span, svg {
 	font-weight: Bold;
 	font-size: 24px;
 }
+
+
+/* 覆盖上面的颜色 */
+.pink-border {
+	border-color: var(--color-pink);
+}
+
+.pink-background {
+	background-color: var(--color-pink);
+}
+
+
+
+.blue-text {
+	color: var(--color-blue);
+}
+
+.blue-border {
+	border-color: var(--color-blue);
+}
+
+.blue-background {
+	background-color: var(--color-blue);
+}
+
+
+
+.green-text {
+	color: var(--color-green);
+}
+
+.green-border {
+	border-color: var(--color-green);
+}
+
+.green-background {
+	background-color: var(--color-green);
+}
+
 
 
 
@@ -390,33 +435,7 @@ he, section, p, span, svg {
 
 
 
-/* 覆盖上面的颜色 */
-.blue-text {
-	color: var(--color-blue);
-}
 
-.blue-border {
-	border-color: var(--color-blue);
-}
-
-.blue-background {
-	border-color: var(--color-blue);
-}
-
-
-
-
-.green-text {
-	color: var(--color-green);
-}
-
-.green-border {
-	border-color: var(--color-green);
-}
-
-.green-background {
-	border-color: var(--color-green);
-}
 
 
 
@@ -450,3 +469,13 @@ he, section, p, span, svg {
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
    */
+
+
+
+
+/* Media Queries */
+@media (max-width: 968px) {
+	.section {
+		width: 100%;
+	}
+}

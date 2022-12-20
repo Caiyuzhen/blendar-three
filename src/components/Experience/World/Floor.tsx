@@ -33,7 +33,7 @@ export default class Floor {
 		
 		this.plane.receiveShadow = true //让物体接收阴影的渲染
 
-		console.log(this.plane);
+		// console.log(this.plane); //地板元素
 	}
 
 
