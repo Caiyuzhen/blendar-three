@@ -18,6 +18,7 @@ export default class Experience {
 	public static instance: Experience //单实例的模式, 把各种 class 的实例都放在 Experience 这里, 其他组件通过 Experience.instance 来获取实例
 	public canvas ? : HTMLCanvasElement //类里边的实例属性
 	public firstEle !: HTMLDivElement
+	public secondEle !: HTMLDivElement
 	public scene!: Scene   //THREE.Scene //类里边的实例属性
 	public time!: Time //类里边的实例属性
 	public sizes!: Sizes //类里边的实例属性
@@ -32,7 +33,7 @@ export default class Experience {
 
 
 
-	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
+	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, secondEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
 		// console.log('Hey, 成功新建类型');
 
 		// 返回实例
@@ -44,6 +45,7 @@ export default class Experience {
 		// super(canvas) //继承的类需要 super 一下
 		this.canvas = canvas //把传进来的 canvas 赋值给类里边的 canvas 属性
 		this.firstEle = firstEle as HTMLDivElement //用于判断 GSAP 加载动画的位置
+		this.secondEle = firstEle as HTMLDivElement //用于判断 GSAP 加载动画的位置
 		this.scene = new THREE.Scene() //实例化一个场景, 赋值给 scene 属性
 		this.time = new Time() //实例化一个时间, 赋值给 time 属性
 		this.sizes = new Sizes() //实例化一个画布的尺寸, 赋值给 sizes 属性

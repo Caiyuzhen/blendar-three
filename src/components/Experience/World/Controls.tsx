@@ -29,6 +29,10 @@ export default class Controls {
 	public room: Scene //因为 Room 内的物体是挂载到 scene 上的 -> this.actualRoom = this.room.scene 
 	readonly sizes: Sizes
 	public firstEle: HTMLDivElement
+	public secondEle: HTMLDivElement
+	public rectLight!: THREE.RectAreaLight //鱼缸灯关
+	public firstMoveTimeline: gsap.core.Timeline
+	public secondMoveTimeline: gsap.core.Timeline
 	public timeline!: gsap.core.Timeline
 	// public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	// public position!: Vector3 //📹初始化时相机在曲线上的坐标点
@@ -50,8 +54,17 @@ export default class Controls {
 		this.resources = this.experience.resources
 		this.room = this.experience.world.room.actualRoom //通过 world 内的 this.resources.on("ready", ()=>{...}) 触发 resource 加载资源的事件
 		this.sizes = this.experience.sizes
-		this.firstEle = this.experience.firstEle //获取 HTML 元素, 用于判断 GSAP 加载动画的位置
+		this.firstEle = this.experience.firstEle //HTML 元素, 用于判断 GSAP 加载动画的位置
+		this.secondEle = this.experience.secondEle //HTML 元素, 用于判断 GSAP 加载动画的位置
+		this.room.children.forEach( (child) => {
+			if(child.type === 'RectAreaLight') { //Three 灯光类型
+				this.rectLight = child as THREE.RectAreaLight//🔥在 Room 内新建的鱼缸灯关,  缩放时，需要把灯关元素单独缩放
+				// console.log('鱼缸灯光', this.rectLight)
+			}
+		}) 
 		GSAP.registerPlugin(ScrollTrigger) //注册 GSAP 上的一个插件
+		this.firstMoveTimeline = new GSAP.core.Timeline() //创建一个 GSAP 的 timeline 实例
+		this.secondMoveTimeline = new GSAP.core.Timeline() //创建一个 GSAP 的 timeline 实例
 		this.timeline = new GSAP.core.Timeline() ////调用 GSAP 的 timeline 库, 进行实例化
 		this.scrollTrigger() //🚗执行滚动的方法
 
@@ -84,26 +97,109 @@ export default class Controls {
 
 	// 🌟滚动页面显示内容的方法
 	scrollTrigger() {
-		// console.log(this.room);
-		this.timeline.to(this.room.position, {
-			// x: 1.5, //向右位移 (写死的方式)
-			// x: this.sizes.width *0.0008, //让位移根据页面尺寸来计算
-			x: () => {
-				return this.sizes.width * 0.00119 //响应式的方式（需要结合下面开启 invalidateOnRefresh）, 让位移根据页面尺寸来计算, 并且能够随着页面的拖动而更新
+		// GSAP 库里边的响应式方法, 用箭头函数的 this 的指向更明确
+		ScrollTrigger.matchMedia({
+
+			// Desktop 桌面端
+			"(min-width: 969px)": () => {
+
+
+				// 第一组移动的元素First Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+					// 🚗第一步: 给 XX 对象添加动画属性
+					this.firstMoveTimeline = new GSAP.core.Timeline({
+						scrollTrigger: {
+							trigger: this.firstEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
+							start: "top top",
+							end: "bottom bottom",
+							scrub: 0.8, //0.1 、 true ...
+							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
+							// markers: true,  //显示标记
+						}
+					})
+
+					// 🚗第二步: 给 XX 对象添加滚动事件
+					this.firstMoveTimeline.to(this.room.position, { //room
+						x: () => {
+							return this.sizes.width * 0.0014  //让位移根据页面尺寸来计算, 位移页面的 0.14% , ⚡️前提是上面开启了 invalidateOnRefresh 才能根据页面尺寸来计算位移的距离
+						},
+					})
+
+
+
+
+				// 第二组移动的元素First Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+					// 🚗第一步: 给 XX 对象添加触发条件
+					this.secondMoveTimeline = new GSAP.core.Timeline({
+						scrollTrigger: {
+							trigger: this.secondEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
+							start: "top top",
+							end: "bottom bottom",
+							scrub: 0.8, //0.1 、 true ...
+							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
+							// markers: true,  //显示标记
+						}
+					})
+
+					// 🚗第二步: 给 XX 对象添加动画属性
+					this.secondMoveTimeline.to(this.room.position, { //room
+						x: () => {
+							return 1 //硬编码
+						},
+						z: () => {
+							return this.sizes.height * 0.0032
+						},
+					}, 'same') //加上 'same' 后就会同时进行！
+
+					this.secondMoveTimeline.to(this.room.scale, { //room
+						x: 0.4, //从 0.1   ->   放大到 0.4, 可以看 Room 内是缩放到 0.1 的
+						y: 0.4,
+						z: 0.4,
+					}, 'same') //加上 'same' 后就会同时进行, 不加就会等到上面的动画结束后才会执行
+
+					this.secondMoveTimeline.to(this.rectLight, { //rectLight
+						width: 1 * 3.2, //因为上面相对放大了 3 倍, 所以这里 X 3
+						height: 0.5 * 3.2,
+					}, 'same') 
+
 			},
 
-			// duration: 20, //位移 20 秒
-			scrollTrigger: {
-				// trigger: ".firsr-mov",//⚡️触发条件, 当这个元素出现后意味着动画结束(普通 js 内的用法)
-				trigger: this.firstEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
-				markers: true,
-				start: "top top",
-				end: "bottom bottom",
-				scrub: 0.8, //0.1 、 true ...
-				invalidateOnRefresh: true,
-			}
+
+			// Mobile 移动端
+			"(max-width: 968px)": () => {
+
+			},
+
+
+			// All devices
+			"all": () => {
+
+			},
 		})
-		// console.log(this.timeline);
+
+
+		// ⬇️先注释掉——————————————————————————————————————————————————
+		// // console.log(this.room);
+		// this.timeline.to(this.room.position, {
+		// 	// x: 1.5, //向右位移 (写死的方式)
+		// 	// x: this.sizes.width *0.0008, //让位移根据页面尺寸来计算, 位移页面的 0.08% 
+		// 	// duration: 20, //位移 20 秒
+			
+		// 	x: () => {
+		// 		return this.sizes.width * 0.00119 //响应式的方式（需要结合下面开启 invalidateOnRefresh）, 让位移根据页面尺寸来计算, 并且能够随着页面的拖动而更新
+		// 	},
+
+		// 	scrollTrigger: {
+		// 		// trigger: ".firsr-mov",//⚡️触发条件, 当这个元素出现后意味着动画结束(普通 js 内的用法)
+		// 		trigger: this.firstEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
+		// 		markers: true,
+		// 		start: "top top",
+		// 		end: "bottom bottom",
+		// 		scrub: 0.8, //0.1 、 true ...
+		// 		invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
+		// 	}
+		// })
+		// // console.log(this.timeline);
+		// ⬆️先注释掉——————————————————————————————————————————————————
 	}
 
 
