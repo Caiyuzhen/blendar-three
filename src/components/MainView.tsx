@@ -11,6 +11,7 @@ export const MainView = () => {
 	const canvasRef = useRef<HTMLCanvasElement>(null) // ref 获取 experience-canvas 元素, 传入 Experience
 	const firstMoveRef = useRef<HTMLDivElement>(null) // ref 获取 GSAP 要判断的 HTML 元素, 传入 Experience
 	const secondMoveRef = useRef<HTMLDivElement>(null) // ref 获取 GSAP 要判断的 HTML 元素, 传入 Experience
+	const thirdMoveRef = useRef<HTMLDivElement>(null) // ref 获取 GSAP 要判断的 HTML 元素, 传入 Experience
 	const toggleButton = useRef<HTMLLabelElement>(null)
 	const toggleCircle = useRef<HTMLInputElement>(null)
 
@@ -20,7 +21,15 @@ export const MainView = () => {
 		if (!canvasRef.current) {
 			return
 		}
-		const experience = new Experience(canvasRef.current!, firstMoveRef.current!, secondMoveRef.current!, toggleButton.current!, toggleCircle.current!) //new 一个 experience 实例, 传入两个 html 元素
+		const experience = new Experience( //传参
+			canvasRef.current!, 
+			firstMoveRef.current!, 
+			secondMoveRef.current!, 
+			thirdMoveRef.current!, 
+			toggleButton.current!, 
+			toggleCircle.current!,
+			) //new 一个 experience 实例, 传入两个 html 元素
+
 		return () => {
 			// clearEffect
 		};
@@ -136,7 +145,7 @@ export const MainView = () => {
 
 
 						{/* 🔥🔥为了把底部的内容称高用, 此外也作为 GSAP 动画库的 trigger, 当滚动到此处时就显示动画！ */}
-						<div className="third-move section-margin"></div>
+						<div className="third-move section-margin" ref={thirdMoveRef}></div>
 
 
 						{/* 第三部分 —————————————————————————————————————— */}

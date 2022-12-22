@@ -19,6 +19,7 @@ export default class Experience {
 	public canvas ? : HTMLCanvasElement //类里边的实例属性
 	public firstEle !: HTMLDivElement
 	public secondEle !: HTMLDivElement
+	public thirdEle !: HTMLDivElement
 	public scene!: Scene   //THREE.Scene //类里边的实例属性
 	public time!: Time //类里边的实例属性
 	public sizes!: Sizes //类里边的实例属性
@@ -33,7 +34,7 @@ export default class Experience {
 
 
 
-	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, secondEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
+	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, secondEle ? : HTMLDivElement, thirdEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
 		// console.log('Hey, 成功新建类型');
 
 		// 返回实例
@@ -45,7 +46,8 @@ export default class Experience {
 		// super(canvas) //继承的类需要 super 一下
 		this.canvas = canvas //把传进来的 canvas 赋值给类里边的 canvas 属性
 		this.firstEle = firstEle as HTMLDivElement //用于判断 GSAP 加载动画的位置
-		this.secondEle = firstEle as HTMLDivElement //用于判断 GSAP 加载动画的位置
+		this.secondEle = secondEle as HTMLDivElement //用于判断 GSAP 加载动画的位置
+		this.thirdEle = thirdEle as HTMLDivElement //
 		this.scene = new THREE.Scene() //实例化一个场景, 赋值给 scene 属性
 		this.time = new Time() //实例化一个时间, 赋值给 time 属性
 		this.sizes = new Sizes() //实例化一个画布的尺寸, 赋值给 sizes 属性
@@ -63,6 +65,7 @@ export default class Experience {
 		// this.room = new Room() //实例化一个房间, 里边的 actualRoom 是最终需要展示出来的元素(可以通过上面的 World 调用)
 		// console.log(this.resources);
 		// console.log(this.firstEle);
+
 
 		
 		/* events.EventEmitter, 事件, 根据 Time 内的事件来更新，然后调用所有子类的 update() 方法 */
