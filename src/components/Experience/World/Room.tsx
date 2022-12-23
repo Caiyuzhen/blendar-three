@@ -93,9 +93,10 @@ export default class Room {
 					})
 				}
 
-				// 👀 查看下所有 blendar 的元素, Blendar 中的命名, 水族箱
+				// 👀 查看下所有 blendar 的元素, Blendar 中的命名
 				console.log(child);
 
+				// 鱼缸
 				if(child.name === "Aquarium") {
 					child.material = new THREE.MeshPhysicalMaterial()
 					// console.log(child.children); //⚡️在 three.js 中，只有网格模型（THREE.Mesh）才具有材质属性，而 THREE.Group 并不拥有材质属性
@@ -112,6 +113,24 @@ export default class Room {
 					child.children[1].material = new THREE.MeshBasicMaterial({
 						map: this.resources.items.screen //📺📺把视频资源添加到材质中
 					})
+				}
+
+				// 🚀第一步: 地板的初始位置（默认位置，做动画用，在 Controld 中结合动画库使用)
+				if(child.name === 'Mini_Floor'){
+					child.position.x = -0.8
+					child.position.z = 8.84
+				}
+
+				// 🚀第一步: 信箱的初始位置 (默认位置，做动画用，在 Controld 中结合动画库使用)
+				if( child.name === 'Mailbox' || 
+					child.name === 'Lamp' || 
+					child.name === 'FloorFirst' ||
+					child.name === 'FloorSecond' ||
+					child.name === 'Dirt' ||
+					child.name === 'FloorThird' || 
+					child.name === 'Flower1' || 
+					child.name === 'Flower2'){
+					child.scale.set(0, 0, 0) //从 0 开始放大, 初始大小
 				}
 			})
 		}

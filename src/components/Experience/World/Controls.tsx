@@ -36,6 +36,17 @@ export default class Controls {
 	public secondMoveTimeline: gsap.core.Timeline
 	public threeMoveTimeline: gsap.core.Timeline
 	public timeline!: gsap.core.Timeline
+	public first!: gsap.core.Tween
+	public second!: gsap.core.Tween
+	public third!: gsap.core.Tween
+	public four!: gsap.core.Tween
+	public five!: gsap.core.Tween
+	public sixth!: gsap.core.Tween
+	public seventh!: gsap.core.Tween
+	public eighth!: gsap.core.Tween
+	public ninth!: gsap.core.Tween
+	public secondPartTimeline!: gsap.core.Timeline
+
 	// public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	// public position!: Vector3 //📹初始化时相机在曲线上的坐标点
 	// public back!: boolean //判断滚轮方向
@@ -106,6 +117,12 @@ export default class Controls {
 
 			// 💻 Desktop 桌面端 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 			"(min-width: 969px)": () => {
+				//Reset 当从移动端的宽度切换回桌面端的宽度时，重新赋予下面 room 跟 灯光的长宽( 初始长宽 )
+				this.room.position.set(0, 0, 0)
+				this.room.scale.set(.12, 0.12, 0.12)
+				this.rectLight.width = 1
+				this.rectLight.height = 0.5
+
 
 				// 第一组移动的元素 First Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 					// 🚗第一步: 给 XX 对象添加动画属性
@@ -189,8 +206,7 @@ export default class Controls {
 
 			// 📱 Mobile 移动端 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 			"(max-width: 968px)": () => {
-
-				// 重置下 Room 的初始化比例，不然会比初始的 1.1 小
+				// Reset 重置下 Room 的初始化比例，不然会比初始的 1.1 小
 				this.room.scale.set(0.09, 0.09, 0.09)
 				this.rectLight.width = 0.7
 				this.rectLight.height = 0.4
@@ -210,9 +226,9 @@ export default class Controls {
 
 					// 🚗第二步: 给 XX 对象添加滚动事件
 					this.firstMoveTimeline.to(this.room.position, { //room
-						x: 0.1,
-						y: 0.1,
-						z: 0.1,
+						x: 0,
+						y: 0.3,
+						z: -0.3,
 					})
 
 
@@ -235,16 +251,16 @@ export default class Controls {
 						x: 0.25,
 						y: 0.25,
 						z: 0.25,
-					},'smae') 
+					},'same') 
 
 					this.secondMoveTimeline.to(this.room.position, { //room
 						x: 1.5,
-					},'smae')
+					},'same')
 					
 					this.secondMoveTimeline.to(this.rectLight, {
 						width: 0.3 * 3.4,
 						height: 0.3 * 3.4,
-					},'smae')
+					},'same')
 
 
 
@@ -257,7 +273,7 @@ export default class Controls {
 							end: "bottom bottom",
 							scrub: 0.6, //0.1 、 true ...
 							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
-							markers: true,  //显示标记
+							// markers: true,  //显示标记
 						}
 					})
 
@@ -270,9 +286,132 @@ export default class Controls {
 
 
 
-			// All devices
-			"all": () => {
 
+			// 👀All devices, 对所有显示尺寸都生效
+			all: () => {
+				// 补间动画
+					// 🚗第一步: 给 XX 对象添加触发条件
+					this.secondPartTimeline = new GSAP.core.Timeline({
+						scrollTrigger: {
+							trigger: this.thirdEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
+							start: "center center", 
+							end: "bottom bottom",
+							scrub: 0.6, //0.1 、 true ...
+							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
+							// markers: true,  //显示标记
+						}
+					})
+
+					// 🚀第二步: 给元素添加补间动画 
+					this.room.children.forEach( (child) => {
+
+						// 🚀地板
+						if( child.name === 'Mini_Floor') {
+							this.first = GSAP.to( child.position, {
+								x: -7,
+								z: 15,
+								duration: 0.35
+							})
+						}
+
+						// 🚀信箱
+						if( child.name === 'Mailbox') {
+							this.second = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+						// 🚀灯
+						if( child.name === 'Lamp') {
+							this.third = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+
+						// 🚀泥土
+						if( child.name === 'Dirt') {
+							this.four = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+
+
+						// 🚀楼梯01
+						if( child.name === 'FloorFirst') {
+							this.five = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+
+						// 🚀楼梯02
+						if( child.name === 'FloorSecond') {
+							this.sixth = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+
+						// 🚀楼梯03
+						if( child.name === 'FloorThird') {
+							this.seventh =  GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+
+						// 🚀花01
+						if( child.name === 'Flower1') {
+							this.eighth = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+
+
+						// 🚀花02
+						if( child.name === 'Flower2') {
+							this.ninth = GSAP.to( child.scale, {
+								x: 1.5,
+								y: 1.5,
+								z: 1.5,
+								duration: 0.35
+							})
+						}
+					})
+
+					// ⚡️元素陆续出现的效果
+					this.secondPartTimeline.add(this.first);
+					this.secondPartTimeline.add(this.second);
+					this.secondPartTimeline.add(this.third);
+					this.secondPartTimeline.add(this.four);
+					this.secondPartTimeline.add(this.five);
+					this.secondPartTimeline.add(this.sixth);
+					this.secondPartTimeline.add(this.seventh);
+					this.secondPartTimeline.add(this.eighth);
+					this.secondPartTimeline.add(this.ninth);
 			},
 		})
 
