@@ -31,6 +31,10 @@ export default class Controls {
 	public firstEle: HTMLDivElement
 	public secondEle: HTMLDivElement
 	public thirdEle: HTMLDivElement
+	public sections: NodeListOf<Element>
+	public progressWrapper!: HTMLDivElement | null
+	public progressBar!: HTMLDivElement | null
+	// public progressWrapper!: Element
 	public rectLight!: THREE.RectAreaLight //鱼缸灯关
 	public firstMoveTimeline: gsap.core.Timeline
 	public secondMoveTimeline: gsap.core.Timeline
@@ -70,6 +74,9 @@ export default class Controls {
 		this.firstEle = this.experience.firstEle //HTML 元素, 用于判断 GSAP 加载动画的位置
 		this.secondEle = this.experience.secondEle //HTML 元素, 用于判断 GSAP 加载动画的位置
 		this.thirdEle = this.experience.thirdEle //HTML 元素, 用于判断 GSAP 加载动画的位置
+		this.progressWrapper 
+		this.progressBar 
+		this.sections = this.experience.sections
 		this.room.children.forEach( (child) => {
 			if(child.type === 'RectAreaLight') { //Three 灯光类型
 				this.rectLight = child as THREE.RectAreaLight//🔥在 Room 内新建的鱼缸灯关,  缩放时，需要把灯关元素单独缩放
@@ -82,7 +89,6 @@ export default class Controls {
 		this.threeMoveTimeline = new GSAP.core.Timeline() //创建一个 GSAP 的 timeline 实例
 		this.timeline = new GSAP.core.Timeline() ////调用 GSAP 的 timeline 库, 进行实例化
 		this.scrollTrigger() //🚗执行滚动的方法
-
 		// this.progress = 0 //相机的轨道
 		// this.dummyCurve = new THREE.Vector3(0, 0, 0) //曲线上的点
 		// this.back = false //判断滚轮方向
@@ -134,13 +140,13 @@ export default class Controls {
 							scrub: 0.6, //0.1 、 true ...
 							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
 							// markers: true,  //显示标记
-						}
+						},
 					})
 
 					// 🚗第二步: 给 XX 对象添加滚动事件
 					this.firstMoveTimeline.to(this.room.position, { //room
 						x: () => {
-							return this.sizes.width * 0.0014  //让位移根据页面尺寸来计算, 位移页面的 0.14% , ⚡️前提是上面开启了 invalidateOnRefresh 才能根据页面尺寸来计算位移的距离
+							return this.sizes.width * 0.0012  //让位移根据页面尺寸来计算, 位移页面的 0.14% , ⚡️前提是上面开启了 invalidateOnRefresh 才能根据页面尺寸来计算位移的距离
 						},
 					})
 
@@ -156,34 +162,39 @@ export default class Controls {
 							scrub: 0.6, //0.1 、 true ...
 							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
 							// markers: true,  //显示标记
-						}
+						},
 					})
 
 					// 🚗第二步: 给 XX 对象添加动画属性
 					this.secondMoveTimeline.to(this.room.position, { //room
 						x: () => {
-							return 1 //硬编码
+							return -1.4 //硬编码
+						},
+						y: () => {
+							return 0.3
 						},
 						z: () => {
-							return this.sizes.height * 0.0032
+							// return this.sizes.height * 0.0018
+							return 0.12
 						},
 					}, 'same') //加上 'same' 后就会同时进行！
 
 					this.secondMoveTimeline.to(this.room.scale, { //room
-						x: 0.4, //从 0.1   ->   放大到 0.4, 可以看 Room 内是缩放到 0.1 的
-						y: 0.4,
-						z: 0.4,
+						x: 0.2, //从 0.1   ->   放大到 0.4, 可以看 Room 内是缩放到 0.1 的
+						y: 0.2,
+						z: 0.2,
 					}, 'same') //加上 'same' 后就会同时进行, 不加就会等到上面的动画结束后才会执行
 
 					this.secondMoveTimeline.to(this.rectLight, { //rectLight
-						width: 1 * 3.2, //因为上面相对放大了 3 倍, 所以这里 X 3
-						height: 0.5 * 3.2,
+						width: 1 * 1.60, //因为上面相对放大了 2 倍, 所以这里接近放大两倍
+						height: 0.5 * 1.6,
 					}, 'same') 
 
 
 
 				// 第三组移动的元素 Third Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 					// 🚗第一步: 给 XX 对象添加触发条件
+					
 					this.threeMoveTimeline = new GSAP.core.Timeline({
 						scrollTrigger: {
 							trigger: this.thirdEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
@@ -191,9 +202,19 @@ export default class Controls {
 							end: "bottom bottom",
 							scrub: 0.6, //0.1 、 true ...
 							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
-							markers: true,  //显示标记
-						}
+							// markers: true,  //显示标记
+						},
 					})
+
+					// 🚗第二步: 给 XX 对象添加动画属性
+					this.secondMoveTimeline.to(this.room.position, { //room
+						y: () => {
+							return 0.5
+						},
+						z: () => {
+							return this.sizes.height * 0.0058
+						},
+					}, 'same') //加上 'same' 后就会同时进行！
 
 					// 🚗第二步: 给 XX 对象添加动画属性
 					this.threeMoveTimeline.to(this.camera.orthographicCamera.position, { //camera, 可以去 Camera 类里边看它的当前位置
@@ -221,7 +242,7 @@ export default class Controls {
 							scrub: 0.6, //0.1 、 true ...
 							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
 							// markers: true,  //显示标记
-						}
+						},
 					})
 
 					// 🚗第二步: 给 XX 对象添加滚动事件
@@ -274,7 +295,7 @@ export default class Controls {
 							scrub: 0.6, //0.1 、 true ...
 							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
 							// markers: true,  //显示标记
-						}
+						},
 					})
 
 					// 🚗第二步: 给 XX 对象添加动画属性
@@ -289,17 +310,89 @@ export default class Controls {
 
 			// 👀All devices, 对所有显示尺寸都生效
 			all: () => {
-				// 补间动画
+
+				// ⭕️滚动条效果
+				this.sections.forEach( section => { //三组 DOM 元素
+					this.progressWrapper = section.querySelector('.progress-wrapper')
+					this.progressBar = section.querySelector('.progress-bar')
+					// const progressWrapper = section.querySelector('.progress-wrapper')
+					// const progressBar = progressWrapper!.querySelector('.progress-bar')
+					// console.log(progressWrapper)
+
+					if(section.classList.contains('right')) {
+						GSAP.to(section, {
+							borderTopLeftRadius: 10,
+							scrollTrigger: {
+								trigger: section,
+								start: 'top bottom',  //开始点（上 + 下的距离）
+								end: 'top top', //结束点（更上 + 上的距离）
+								scrub: 0.2,
+								// markers: true,
+							}, //scrollTrigger 函数末尾记得加逗号 , 否则容易报错！
+						})
+					
+						GSAP.to(section, {
+							borderBottomLeftRadius: 700,
+							scrollTrigger: {
+								trigger: section,
+								start: 'bottom bottom',  //从 section 元素身上哪个点开始计算， 开始点（上 + 下的距离）, start 是触发滚动动画开始的位置,两个绿色的标记线
+								end: 'bottom top', //结束点（更上 + 上的距离）, end是触发滚动动画结束的位置, 两个红色的标记线
+								scrub: 0.2,
+								// markers: true,
+							},
+						})
+					} else {
+						GSAP.to(section, {
+							borderTopRightRadius: 10,
+							scrollTrigger: {
+								trigger: section,
+								start: 'top bottom',  //开始点（上 + 下的距离）
+								end: 'top top', //结束点（更上 + 上的距离）
+								scrub: 0.2,
+								// markers: true,
+							},
+						})
+					
+						GSAP.to(section, {
+							borderBottomRightRadius: 700,
+							scrollTrigger: {
+								trigger: section,
+								start: 'bottom bottom',  //开始点（上 + 下的距离）
+								end: 'bottom top', //结束点（更上 + 上的距离）
+								scrub: 0.2,
+								// markers: true,
+							},
+						})
+					}
+
+					// 🚗进度条效果
+					GSAP.from(this.progressBar, {
+                       scaleY: 0,
+					   scrollTrigger: {
+							trigger: section,
+							start: 'top top',
+							end: 'bottom bottom',
+							scrub: 0.4,
+							pin: this.progressWrapper,
+							pinSpacing: false,	 
+					   },
+                    });
+				})
+
+
+
+
+				// 🏠 Room 补间动画
 					// 🚗第一步: 给 XX 对象添加触发条件
 					this.secondPartTimeline = new GSAP.core.Timeline({
 						scrollTrigger: {
-							trigger: this.thirdEle,//⚡️触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
+							trigger: this.thirdEle,//触发条件, 当这个元素出现后意味着动画结束(ts 内的用法)
 							start: "center center", 
-							end: "bottom bottom",
-							scrub: 0.6, //0.1 、 true ...
-							invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
+							// end: "bottom bottom",
+							// scrub: 0.6, //0.1 、 true ... /⚡️开启后，不会i懂播放, 会根据滚动的程度来播放
+							// invalidateOnRefresh: true, //⚡️开启后才能根据页面尺寸来计算位移的距离
 							// markers: true,  //显示标记
-						}
+						},
 					})
 
 					// 🚀第二步: 给元素添加补间动画 
@@ -307,9 +400,11 @@ export default class Controls {
 
 						// 🚀地板
 						if( child.name === 'Mini_Floor') {
+							// 不加陆续出现的效果的话就是 GSAP.to(child.position, {...})
 							this.first = GSAP.to( child.position, {
-								x: -7,
-								z: 15,
+								x: -6.2,
+								z: 14,
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
 								duration: 0.35
 							})
 						}
@@ -320,7 +415,8 @@ export default class Controls {
 								x: 1.5,
 								y: 1.5,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 
@@ -330,7 +426,8 @@ export default class Controls {
 								x: 1.5,
 								y: 1.5,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 
@@ -338,13 +435,13 @@ export default class Controls {
 						// 🚀泥土
 						if( child.name === 'Dirt') {
 							this.four = GSAP.to( child.scale, {
-								x: 1.5,
-								y: 1.5,
-								z: 1.5,
-								duration: 0.35
+								x: 1.2,
+								y: 1.2,
+								z: 1.2,
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
-
 
 
 						// 🚀楼梯01
@@ -353,7 +450,8 @@ export default class Controls {
 								x: 1.5,
 								y: 1.5,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 
@@ -362,9 +460,10 @@ export default class Controls {
 						if( child.name === 'FloorSecond') {
 							this.sixth = GSAP.to( child.scale, {
 								x: 1.5,
-								y: 1.5,
+								y: 1.2,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 
@@ -375,7 +474,8 @@ export default class Controls {
 								x: 1.5,
 								y: 1.5,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 
@@ -386,7 +486,8 @@ export default class Controls {
 								x: 1.5,
 								y: 1.5,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 
@@ -397,21 +498,22 @@ export default class Controls {
 								x: 1.5,
 								y: 1.5,
 								z: 1.5,
-								duration: 0.35
+								ease: "back.out(2)",//缓动动画, 需要用双括号！
+								duration: 0.3
 							})
 						}
 					})
 
 					// ⚡️元素陆续出现的效果
 					this.secondPartTimeline.add(this.first);
-					this.secondPartTimeline.add(this.second);
+					this.secondPartTimeline.add(this.second); // -= 0.2 表示提前 0.2 秒执行
 					this.secondPartTimeline.add(this.third);
-					this.secondPartTimeline.add(this.four);
-					this.secondPartTimeline.add(this.five);
-					this.secondPartTimeline.add(this.sixth);
-					this.secondPartTimeline.add(this.seventh);
+					this.secondPartTimeline.add(this.four, "-=0.2");
+					this.secondPartTimeline.add(this.five, "-=0.2");
+					this.secondPartTimeline.add(this.sixth, "-=0.2");
+					this.secondPartTimeline.add(this.seventh, "-=0.2");
 					this.secondPartTimeline.add(this.eighth);
-					this.secondPartTimeline.add(this.ninth);
+					this.secondPartTimeline.add(this.ninth, "-=0.1");
 			},
 		})
 

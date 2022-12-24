@@ -1,7 +1,8 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef, useEffect, createContext, useContext} from 'react'
 import './MainView.css'
 import Experience from './Experience/Experience'
 import './MainView.css'
+import { ViewContext } from '../components/utils/useViewContext'
 
 
 
@@ -15,9 +16,12 @@ export const MainView = () => {
 	const toggleButton = useRef<HTMLLabelElement>(null)
 	const toggleCircle = useRef<HTMLInputElement>(null)
 
+
 	  
 	// 根据 class new 一个实例
 	useEffect(() => {
+		const sections: NodeListOf<Element> = document.querySelectorAll('.section')	//页面加载完后, 获取三个 DOM 元素
+
 		if (!canvasRef.current) {
 			return
 		}
@@ -28,8 +32,8 @@ export const MainView = () => {
 			thirdMoveRef.current!, 
 			toggleButton.current!, 
 			toggleCircle.current!,
-			) //new 一个 experience 实例, 传入两个 html 元素
-
+			sections,
+		) //new 一个 experience 实例, 传入两个 html 元素
 		return () => {
 			// clearEffect
 		};
@@ -90,6 +94,12 @@ export const MainView = () => {
 
 						{/* 第一部分 —————————————————————————————————————— */}
 						<section className="first-section section left">
+
+							{/* 滚动条 */}
+							<div className="progress-wrapper progress-bar-wrapper-left">
+								<div className="progress-bar"></div>
+							</div>
+
 							<div className="section-intro-wrapper pink-border">
 								<h1 className="section-title">
 									{/* 标题 */}
@@ -120,6 +130,12 @@ export const MainView = () => {
 
 						{/* 第二部分 —————————————————————————————————————— */}
 						<section className="second-section section right">
+
+							{/* 滚动条 */}
+							<div className="progress-wrapper progress-bar-wrapper-right">
+								<div className="progress-bar blue-background"></div>
+							</div>
+
 							<div className="section-intro-wrapper blue-text blue-border">
 								<h1 className="section-title  blue-text  blue-border">
 									{/* 标题 */}
@@ -150,6 +166,12 @@ export const MainView = () => {
 
 						{/* 第三部分 —————————————————————————————————————— */}
 						<section className="third-section section left">
+
+							{/* 滚动条 */}
+							<div className="progress-wrapper progress-bar-wrapper-left">
+								<div className="progress-bar green-background"></div>
+							</div>
+
 							<div className="section-intro-wrapper green-text green-border">
 								<h1 className="section-title green-text  green-border">
 									{/* 标题 */}

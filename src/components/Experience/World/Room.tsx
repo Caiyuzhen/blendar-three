@@ -94,7 +94,7 @@ export default class Room {
 				}
 
 				// 👀 查看下所有 blendar 的元素, Blendar 中的命名
-				console.log(child);
+				// console.log(child);
 
 				// 鱼缸
 				if(child.name === "Aquarium") {
@@ -117,19 +117,21 @@ export default class Room {
 
 				// 🚀第一步: 地板的初始位置（默认位置，做动画用，在 Controld 中结合动画库使用)
 				if(child.name === 'Mini_Floor'){
-					child.position.x = -0.8
-					child.position.z = 8.84
+					child.position.x = 1.6
+					child.position.z = 6
 				}
 
 				// 🚀第一步: 信箱的初始位置 (默认位置，做动画用，在 Controld 中结合动画库使用)
-				if( child.name === 'Mailbox' || 
+				if( 
+					child.name === 'Mailbox' || 
 					child.name === 'Lamp' || 
 					child.name === 'FloorFirst' ||
 					child.name === 'FloorSecond' ||
 					child.name === 'Dirt' ||
 					child.name === 'FloorThird' || 
 					child.name === 'Flower1' || 
-					child.name === 'Flower2'){
+					child.name === 'Flower2'
+				){
 					child.scale.set(0, 0, 0) //从 0 开始放大, 初始大小
 				}
 			})

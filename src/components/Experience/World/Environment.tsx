@@ -53,7 +53,7 @@ export default class Environment {
 		this.gui.addColor(this.obj, 'colorObj').onChange(() => {
 			this.sunLight.color.copy(this.obj.colorObj)
 			this.ambientLight.color.copy(this.obj.colorObj)
-			console.log(this.obj.colorObj)
+			// console.log(this.obj.colorObj)
 			// console.log(
 			// 	"color 的值:",
 			// 	this.color, '\n', //换行的方法

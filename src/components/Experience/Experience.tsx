@@ -20,6 +20,7 @@ export default class Experience {
 	public firstEle !: HTMLDivElement
 	public secondEle !: HTMLDivElement
 	public thirdEle !: HTMLDivElement
+	public sections! : NodeListOf<Element>
 	public scene!: Scene   //THREE.Scene //类里边的实例属性
 	public time!: Time //类里边的实例属性
 	public sizes!: Sizes //类里边的实例属性
@@ -34,7 +35,7 @@ export default class Experience {
 
 
 
-	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, secondEle ? : HTMLDivElement, thirdEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
+	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, secondEle ? : HTMLDivElement, thirdEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement, sections ? : NodeListOf<Element>) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
 		// console.log('Hey, 成功新建类型');
 
 		// 返回实例
@@ -56,6 +57,7 @@ export default class Experience {
 		this.resources = new Resources(Assets) //🔥实例化一个资源管理器, 赋值给 resources 属性
 		this.toggleButton = toggleButton as HTMLLabelElement
 		this.toggleCircle = toggleCircle as HTMLInputElement
+		this.sections = sections as NodeListOf<Element>
 		this.theme = new Theme( //把两个 toggle 元素传给它
 			this.toggleButton,
 			this.toggleCircle,
