@@ -16,6 +16,10 @@ html, body {
 	color: var(--text-black);
 }
 
+body {
+	overflow: hidden; /* 隐藏滚动条 */
+}
+
 /* 偷懒，快速添加过渡属性, 让深浅色的切换更柔缓 */
 he, section, p, span, svg {
 	transition: all 0.3s ease-in-out;
