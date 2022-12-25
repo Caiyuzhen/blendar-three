@@ -13,7 +13,9 @@ import Controls from './Controls'
 import Floor from './Floor' //🏓导入新物体第一步
 
 
-export default class World {
+
+// 等 Resource 加载完后, 实例化所有物体
+export default class World extends EventEmitter{ //下面要用 emit 发出事件信号的话, 就要继承 EventEmitter
 	public experience: Experience
 	public sizes: Sizes //比例
 	public canvas ?: HTMLCanvasElement //画布
@@ -28,10 +30,9 @@ export default class World {
 	public controls!: Controls
 
 
-	
-
 	// 🔥在 World 的构造函数中初始化实例属性
 	constructor() {  
+		super()
 		this.experience = new Experience()
 		this.sizes = this.experience.sizes //因为在 Experience 里边已经实例化了 sizes, 所以这里直接拿过来用就行了
 		this.scene = this.experience.scene
@@ -50,6 +51,7 @@ export default class World {
 			this.room = new Room() //创建一个房间 
 			this.controls = new Controls() //曲线, 控制相机的运动方向
 			// console.log(this.scene);
+			this.emit("worldReady") // ⚡️⚡️接收到 ready 事件后，再去发送一个 worldReady 事件，通知 Preloader
 		})
 
 		 //⚡️⚡️利用 event 库接收 Theme 组件内的 switch 事件以及事件参数！

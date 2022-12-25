@@ -16,7 +16,7 @@ import ASScroll from '@ashthornton/asscroll'
 
 
 
-// ⚡️核心是用于控制页面的滚动动画以及相机的移动曲线
+// ⚡️核心是用于控制页面的滚动来触发动画, 以及相机的移动曲线
 export default class Controls {
 	public experience!: Experience //⚡️记得先后顺序！Experience 放在 Resources 前边！！
 	public scene: Scene
@@ -155,7 +155,7 @@ export default class Controls {
 					// 🚗第二步: 给 XX 对象添加滚动事件
 					this.firstMoveTimeline.to(this.room.position, { //room
 						x: () => {
-							return this.sizes.width * 0.0012  //让位移根据页面尺寸来计算, 位移页面的 0.14% , ⚡️前提是上面开启了 invalidateOnRefresh 才能根据页面尺寸来计算位移的距离
+							return this.sizes.width * 0.0016  //让位移根据页面尺寸来计算, 位移页面的 0.16% , ⚡️前提是上面开启了 invalidateOnRefresh 才能根据页面尺寸来计算位移的距离
 						},
 						y: () => {
 							return 0.1
@@ -231,6 +231,9 @@ export default class Controls {
 					}) 
 			},
 
+
+
+			
 
 
 			// 📱 Mobile 移动端 ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -316,9 +319,8 @@ export default class Controls {
 
 
 
-			// 👀All devices, 对所有显示尺寸都生效
+			// 👀All devices, 对所有显示尺寸都生效(滚动条、圆盘)
 			all: () => {
-
 				// ⭕️滚动条效果
 				this.sections.forEach( section => { //三组 DOM 元素
 					this.progressWrapper = section.querySelector('.progress-wrapper')
@@ -420,7 +422,7 @@ export default class Controls {
 							scrub: 0.6, 
 							invalidateOnRefresh: true, 
 						},
-					}).to(this.circleThird.scale, { //更简便的写法, 直接 to
+					}).to(this.circleSecond.scale, { //更简便的写法, 直接 to
 						x: 3,
 						y: 3,
 						z: 3,
@@ -438,7 +440,7 @@ export default class Controls {
 							scrub: 0.6, 
 							invalidateOnRefresh: true, 
 						},
-					}).to(this.circleSecond.scale, { //更简便的写法, 直接 to
+					}).to(this.circleThird.scale, { //更简便的写法, 直接 to
 						x: 3,
 						y: 3,
 						z: 3,

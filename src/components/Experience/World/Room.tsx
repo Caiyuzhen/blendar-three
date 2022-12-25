@@ -22,6 +22,7 @@ export default class Room {
 	private animations: any
 	public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	public rotation!: number //计算鼠标移动的距离, 从而改变房屋的旋转角度
+	public roomChildren: any
 	// mouse: { mouseX: number; mouseY: number }
 
 
@@ -34,13 +35,12 @@ export default class Room {
 		this.time = this.experience.time
 		this.room = this.resources.items.room //⚡️通过 resources 获取到 room 的 3D 物体
 		this.actualRoom = this.room.scene //🔥最终真正想要展示在 ROOM 内的 3D 物体  // console.log(this.actualRoom); //真正想要展示在 ROOM 内的 3D 物体
-		// 👋一: 定义控制房屋旋转的参数
-		this.lerp = {
+		this.roomChildren = {}
+		this.lerp = {// 👋一: 定义控制房屋旋转的参数
 			current: 0, //指定当前值
 			target:0, //指定目标值
 			ease: 0.15, //缓动值
 		} 
-
 		this.rotation = 0
 
 		// // 定义 mouse
@@ -62,7 +62,7 @@ export default class Room {
 	}
 
 
-	// 👋二: 定义鼠标移动事件, 计算控制房屋的旋转的比率
+	// 👋二: 定义鼠标移动事件, 计算控制房屋的旋转的比率 (随着鼠标而旋转)
 	onMouseMove() {
 		window.addEventListener('mousemove', (e)=>{
 			// console.log(e); //利用 ClientX 和 ClientY 来获取鼠标距离浏览器左上角的距离
@@ -122,18 +122,28 @@ export default class Room {
 				}
 
 				// 🚀第一步: 信箱的初始位置 (默认位置，做动画用，在 Controld 中结合动画库使用)
-				if( 
-					child.name === 'Mailbox' || 
-					child.name === 'Lamp' || 
-					child.name === 'FloorFirst' ||
-					child.name === 'FloorSecond' ||
-					child.name === 'Dirt' ||
-					child.name === 'FloorThird' || 
-					child.name === 'Flower1' || 
-					child.name === 'Flower2'
-				){
-					child.scale.set(0, 0, 0) //从 0 开始放大, 初始大小
+				// if( 
+				// 	child.name === 'Mailbox' || 
+				// 	child.name === 'Lamp' || 
+				// 	child.name === 'FloorFirst' ||
+				// 	child.name === 'FloorSecond' ||
+				// 	child.name === 'Dirt' ||
+				// 	child.name === 'FloorThird' || 
+				// 	child.name === 'Flower1' || 
+				// 	child.name === 'Flower2'
+				// ){
+				// 	child.scale.set(0, 0, 0) //从 0 开始放大, 初始大小
+				// }
+
+				// 后续增加的，把所有元素都缩放到 0, 配合动画出现
+				child.scale.set(0, 0, 0)
+				if(child.name === 'Cube') { //加载时的小立方体
+					// child.scale.set(1, 1, 1,)
+					child.position.set(0, -1, 0)
+					child.rotation.y = Math.PI / 4  //旋转 45 度
 				}
+
+				this.roomChildren[child.name.toLowerCase()] = child   //⚡️用两变量去接收所有物体，然后再到 Preloader 里边去做 loading 的动画, toLowerCase 表示变为小写, 更可读
 			})
 		}
 
@@ -152,6 +162,8 @@ export default class Room {
 		
 		const rectLightHelper = new RectAreaLightHelper( rectLight )
 		this.actualRoom.add(rectLightHelper) 
+
+		this.roomChildren['rectLight'] = rectLight   //⚡️用个变量去接收所有物体，然后再到 Preloader 里边去做 loading 的动画
 
 
 		// 对房间内的物体进行全局控制
@@ -206,7 +218,7 @@ export default class Room {
 			this.lerp.ease,  //缓动值
 		) 
 
-		// 👋二: 应用比率, 让房子动起来
+		// 👋二: 应用比率, 让房子动起来(随着鼠标而旋转)
 		this.actualRoom.rotation.y = this.lerp.current
 
 

@@ -48,7 +48,7 @@ export default class Camera {
 	}
 
 
-	// ⚡️创建正交相机的方法
+	// ⚡️⚡️⚡️创建正交相机的方法 (👀👀默认视角)
 	createOrthographicCamera() {
 		//👀🎿非常酷的视角
 		// this.orthographicCamera = new THREE.PerspectiveCamera( 
@@ -70,7 +70,7 @@ export default class Camera {
 		// ————
 
 		// 🔥更新正交相机的位置
-		this.orthographicCamera.position.y = 4
+		this.orthographicCamera.position.y = 3.5
 		this.orthographicCamera.position.z = 5
 		this.orthographicCamera.rotation.x =  -Math.PI / 6
 

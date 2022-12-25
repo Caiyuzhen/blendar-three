@@ -10,7 +10,7 @@ import Assets from './utils/Assets'
 import Room from './World/Room'
 import Theme from './Theme'
 import World from './World/World'
-
+import Preloader from './Preloader'
 
 
 // ⚡️⚡️ 封装其他所有组件的能力, 返回单独的一个实例 （封装 api 的逻辑）
@@ -31,6 +31,7 @@ export default class Experience {
 	private toggleCircle!: HTMLInputElement
 	public theme!: Theme 
 	public world!: World //定义一个世界(所有模型都在 World 里边的 Home 进行实例化！)
+	public preloader!: Preloader
 	// public room!: Room
 
 
@@ -64,10 +65,10 @@ export default class Experience {
 		)
 
 		this.world = new World() //🌍实例化一个世界, 赋值给 world 属性（🔥🔥world 一定义放最后面！不然获取不到 resources!）
+		this.preloader = new Preloader()
 		// this.room = new Room() //实例化一个房间, 里边的 actualRoom 是最终需要展示出来的元素(可以通过上面的 World 调用)
 		// console.log(this.resources);
 		// console.log(this.firstEle);
-
 
 		
 		/* events.EventEmitter, 事件, 根据 Time 内的事件来更新，然后调用所有子类的 update() 方法 */
@@ -82,6 +83,9 @@ export default class Experience {
 		// // from https://threejs.org/docs/#manual/zh/introduction/Creating-a-scene
 	}
 
+
+
+	
 	////🎃第三步: 定义更新个函数, 统一调用所有子类内的 update() 方法！
 	update() {
 		this.camera.update()

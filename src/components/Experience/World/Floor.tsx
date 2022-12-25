@@ -44,21 +44,25 @@ export default class Floor {
 
 
 
-	// 创建圆形 (房间底部的圆形色块，随着滚动而缩放) （🔥也是在 World 里边进行实例化！）
+	// 创建圆盘 (房间底部的圆形色块，随着滚动而缩放) （🔥也是在 World 里边进行实例化！）
 	setCircles() {
-		const geometry = new THREE.CircleGeometry(100, 100) //创建一个圆形
+		const geometry = new THREE.CircleGeometry(60, 100) //创建一个圆形
 		const material = new THREE.MeshStandardMaterial({color: 0xe5a1aa,})  //🔥MeshStandardMaterial 才能接收到投影！
 		const material2 = new THREE.MeshStandardMaterial({color: 0x8395cd,})  //🔥MeshStandardMaterial 才能接收到投影！
 		const material3 = new THREE.MeshStandardMaterial({color: 0x7ad0ac})  //🔥MeshStandardMaterial 才能接收到投影！
 		this.circleFirst = new THREE.Mesh(geometry, material)
 		this.circleSecond = new THREE.Mesh(geometry, material2)
 		this.circleThird = new THREE.Mesh(geometry, material3)
-		this.circleFirst.position.y = -0.1
-		this.circleSecond.position.y = -0.09
-		this.circleThird.position.y = -0.08
+
+		this.circleFirst.position.y = -0.2 //圆盘位置不能在 plane 之下！不然会被遮挡看不到！
+		this.circleSecond.position.y = -0.19
+		this.circleSecond.position.x = 1.5 // 修正一下第二个圆盘准备放大的初始位置
+		this.circleThird.position.y = -0.18
+
 		this.circleFirst.scale.set(0, 0, 0)
 		this.circleSecond.scale.set(0, 0, 0)
 		this.circleThird.scale.set(0, 0, 0)
+
 		this.circleFirst.rotation.x = this.circleSecond.rotation.x = this.circleThird.rotation.x = -Math.PI / 2 //把物体旋转 90 度, 变成水平而不是垂直
 		this.circleFirst.receiveShadow = this.circleSecond.receiveShadow = this.circleThird.receiveShadow = true //接收投影
 		this.scene.add(this.circleFirst)
