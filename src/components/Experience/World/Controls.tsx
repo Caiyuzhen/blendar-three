@@ -12,7 +12,7 @@ import Sizes from '../utils/Size'
 // import ScrollTrigger from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
 import Timeline from "gsap"
-
+import ASScroll from '@ashthornton/asscroll'
 
 
 
@@ -34,7 +34,6 @@ export default class Controls {
 	public sections: NodeListOf<Element>
 	public progressWrapper!: HTMLDivElement | null
 	public progressBar!: HTMLDivElement | null
-	// public progressWrapper!: Element
 	public rectLight!: THREE.RectAreaLight //鱼缸灯关
 	public firstMoveTimeline: gsap.core.Timeline
 	public secondMoveTimeline: gsap.core.Timeline
@@ -50,6 +49,11 @@ export default class Controls {
 	public eighth!: gsap.core.Tween
 	public ninth!: gsap.core.Tween
 	public secondPartTimeline!: gsap.core.Timeline
+	public circleFirst: THREE.Mesh
+	public circleSecond: THREE.Mesh
+	public circleThird: THREE.Mesh
+
+	// private asscroll!: ASScroll
 
 	// public lerp: { current: number , target: number, ease: number } //📹相机最终要运动到的点: 一个缓动曲线对象的类型，用于计算 current 和 target 的值, 从而改变 position
 	// public position!: Vector3 //📹初始化时相机在曲线上的坐标点
@@ -83,11 +87,14 @@ export default class Controls {
 				// console.log('鱼缸灯光', this.rectLight)
 			}
 		}) 
-		GSAP.registerPlugin(ScrollTrigger) //注册 GSAP 上的一个插件
 		this.firstMoveTimeline = new GSAP.core.Timeline() //创建一个 GSAP 的 timeline 实例
 		this.secondMoveTimeline = new GSAP.core.Timeline() //创建一个 GSAP 的 timeline 实例
 		this.threeMoveTimeline = new GSAP.core.Timeline() //创建一个 GSAP 的 timeline 实例
 		this.timeline = new GSAP.core.Timeline() ////调用 GSAP 的 timeline 库, 进行实例化
+		this.circleFirst = this.experience.world.floor.circleFirst
+		this.circleSecond = this.experience.world.floor.circleSecond
+		this.circleThird = this.experience.world.floor.circleThird
+		GSAP.registerPlugin(ScrollTrigger) //注册 GSAP 上的一个插件
 		this.scrollTrigger() //🚗执行滚动的方法
 		// this.progress = 0 //相机的轨道
 		// this.dummyCurve = new THREE.Vector3(0, 0, 0) //曲线上的点
@@ -114,6 +121,8 @@ export default class Controls {
 		// this.setPath()// ⚡️先注释掉
 		// this.onWheel()// ⚡️当鼠标滚轮滚动时, 改变摄像机的视角（也就是改变 curve 的曲线）, 改变 progress
 	}
+
+
 
 
 	// 🌟滚动页面显示内容的方法
@@ -148,6 +157,9 @@ export default class Controls {
 						x: () => {
 							return this.sizes.width * 0.0012  //让位移根据页面尺寸来计算, 位移页面的 0.14% , ⚡️前提是上面开启了 invalidateOnRefresh 才能根据页面尺寸来计算位移的距离
 						},
+						y: () => {
+							return 0.1
+						},
 					})
 
 
@@ -171,23 +183,29 @@ export default class Controls {
 							return -1.4 //硬编码
 						},
 						y: () => {
-							return 0.3
+							return 0.2
 						},
-						z: () => {
-							// return this.sizes.height * 0.0018
-							return 0.12
-						},
+						// z: () => {
+						// 	// return this.sizes.height * 0.0018
+						// 	return 0.12
+						// },
 					}, 'same') //加上 'same' 后就会同时进行！
 
 					this.secondMoveTimeline.to(this.room.scale, { //room
-						x: 0.2, //从 0.1   ->   放大到 0.4, 可以看 Room 内是缩放到 0.1 的
+						x: 0.2, //从 0.1  ->   放大到 0.2, 可以看 Room 内是缩放到 0.1 的
 						y: 0.2,
 						z: 0.2,
-					}, 'same') //加上 'same' 后就会同时进行, 不加就会等到上面的动画结束后才会执行
+					}, 'same') 
 
 					this.secondMoveTimeline.to(this.rectLight, { //rectLight
-						width: 1 * 1.60, //因为上面相对放大了 2 倍, 所以这里接近放大两倍
+						width: 1 * 1.6, //因为上面相对放大了 2 倍, 所以这里接近放大两倍
 						height: 0.5 * 1.6,
+					}, 'same') 
+					
+					this.secondMoveTimeline.to(this.rectLight.position, { //rectLight
+						x: 7.6,
+						y: 7,
+						z: -0.1,
 					}, 'same') 
 
 
@@ -207,18 +225,8 @@ export default class Controls {
 					})
 
 					// 🚗第二步: 给 XX 对象添加动画属性
-					this.secondMoveTimeline.to(this.room.position, { //room
-						y: () => {
-							return 0.5
-						},
-						z: () => {
-							return this.sizes.height * 0.0058
-						},
-					}, 'same') //加上 'same' 后就会同时进行！
-
-					// 🚗第二步: 给 XX 对象添加动画属性
 					this.threeMoveTimeline.to(this.camera.orthographicCamera.position, { //camera, 可以去 Camera 类里边看它的当前位置
-						y: -1.5, //硬编码
+						y: 1.5, //硬编码
 						x: -4.1, //硬编码
 					}) 
 			},
@@ -316,8 +324,6 @@ export default class Controls {
 					this.progressWrapper = section.querySelector('.progress-wrapper')
 					this.progressBar = section.querySelector('.progress-bar')
 					// const progressWrapper = section.querySelector('.progress-wrapper')
-					// const progressBar = progressWrapper!.querySelector('.progress-bar')
-					// console.log(progressWrapper)
 
 					if(section.classList.contains('right')) {
 						GSAP.to(section, {
@@ -382,7 +388,72 @@ export default class Controls {
 
 
 
-				// 🏠 Room 补间动画
+
+
+
+				// ⚡️ 底部圆形平台的放大效果
+				// 第一组移动的元素 First Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+					// 🚗第一步: 给 XX 对象添加动画属性
+					this.firstMoveTimeline = new GSAP.core.Timeline({
+						scrollTrigger: {
+							trigger: this.firstEle,
+							start: "top top",
+							end: "bottom bottom",
+							scrub: 0.6, 
+							invalidateOnRefresh: true,
+						},
+					}).to(this.circleFirst.scale, { //更简便的写法, 直接 to
+						x: 3,
+						y: 3,
+						z: 3,
+					}) 
+
+
+
+				// 第二组移动的元素 Second Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+					// 🚗第一步: 给 XX 对象添加触发条件
+					this.secondMoveTimeline = new GSAP.core.Timeline({
+						scrollTrigger: {
+							trigger: this.secondEle,
+							start: "top top",
+							end: "bottom bottom",
+							scrub: 0.6, 
+							invalidateOnRefresh: true, 
+						},
+					}).to(this.circleThird.scale, { //更简便的写法, 直接 to
+						x: 3,
+						y: 3,
+						z: 3,
+					}) 
+
+				
+
+				// 第三组移动的元素 Third Section ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+					// 🚗第一步: 给 XX 对象添加触发条件
+					this.threeMoveTimeline = new GSAP.core.Timeline({
+						scrollTrigger: {
+							trigger: this.thirdEle,
+							start: "top top", 
+							end: "bottom bottom",
+							scrub: 0.6, 
+							invalidateOnRefresh: true, 
+						},
+					}).to(this.circleSecond.scale, { //更简便的写法, 直接 to
+						x: 3,
+						y: 3,
+						z: 3,
+					}) 
+
+					
+
+
+
+
+
+
+					
+
+				// 🏠 Room 补间动画( platform 上的元素生长起来, 到第 3 part 才开始播放)
 					// 🚗第一步: 给 XX 对象添加触发条件
 					this.secondPartTimeline = new GSAP.core.Timeline({
 						scrollTrigger: {

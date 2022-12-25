@@ -28,6 +28,8 @@ export default class World {
 	public controls!: Controls
 
 
+	
+
 	// 🔥在 World 的构造函数中初始化实例属性
 	constructor() {  
 		this.experience = new Experience()
@@ -44,8 +46,8 @@ export default class World {
 		*/
 		this.resources.on("ready", ()=>{
 			this.environment = new Environment() //创建一个灯光环境
+			this.floor = new Floor() ////🏓导入新物体第三步（地板要在 Room 之前创建）
 			this.room = new Room() //创建一个房间 
-			this.floor = new Floor() ////🏓导入新物体第三步
 			this.controls = new Controls() //曲线, 控制相机的运动方向
 			// console.log(this.scene);
 		})
@@ -55,6 +57,10 @@ export default class World {
 			this.switchTheme(theme)
 		})
 	}
+
+
+
+
 
 
 	// 🌞切换主题色的方法, 本质上是再去调用 Environment 组件内的 switchTheme 方法

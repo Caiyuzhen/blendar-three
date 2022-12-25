@@ -3,7 +3,7 @@ import './MainView.css'
 import Experience from './Experience/Experience'
 import './MainView.css'
 import { ViewContext } from '../components/utils/useViewContext'
-
+import ASScroll from "@ashthornton/asscroll";
 
 
 
@@ -16,9 +16,9 @@ export const MainView = () => {
 	const toggleButton = useRef<HTMLLabelElement>(null)
 	const toggleCircle = useRef<HTMLInputElement>(null)
 
-
 	  
-	// 根据 class new 一个实例
+
+	// 根据 class new 一个 Experience 实例
 	useEffect(() => {
 		const sections: NodeListOf<Element> = document.querySelectorAll('.section')	//页面加载完后, 获取三个 DOM 元素
 
