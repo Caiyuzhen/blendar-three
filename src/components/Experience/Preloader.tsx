@@ -9,7 +9,7 @@ import { Scene } from '../../Types/ThreeTypes'
 import Camera from './Camera'
 import Sizes from './utils/Size'
 import World from './World/World'
-import convert from './utils/covertTextToSpan'
+import convert from './utils/covertTextToSpan' //拆分出一个个文字的方法
 
 
 
@@ -32,6 +32,8 @@ export default class Preloader extends EventEmitter {
 	public moveFlag: Boolean = false
 	public scaleFlag: Boolean = false
 
+	
+
 
 	constructor() {
 		super()
@@ -43,6 +45,11 @@ export default class Preloader extends EventEmitter {
 		this.sizes = this.experience.sizes
 		this.world = this.experience.world
 		this.device = this.sizes.device
+		this.intro_Text = this.experience.intro_Text	
+		this.intro_Maintitle = this.experience.intro_Maintitle
+		this.intro_MainDes = this.experience.intro_MainDes
+		this.intro_SecondSubHead = this.experience.intro_SecondSubHead
+		this.intro_SecondSubTitle = this.experience.intro_SecondSubTitle
 
 		this.sizes.on('switchDevice', (device: string) => { //🔥等 Size 内发出 emit 信号, 可以获得 device 的值
 			this.device = device
@@ -57,8 +64,13 @@ export default class Preloader extends EventEmitter {
 
 
 
-	// 用变量来承接元素, 方便后边使用
+	// ⚡️用变量来承接元素并进行处理, 方便下边的动画使用
 	setAssets() {
+		convert(this.intro_Text)// 拆分出一个个文字
+		convert(this.intro_Maintitle) // 拆分出一个个文字
+		convert(this.intro_MainDes) // 拆分出一个个文字
+		convert(this.intro_SecondSubHead) // 拆分出一个个文字
+		convert(this.intro_SecondSubTitle) // 拆分出一个个文字
 		this.room = this.experience.world.room.actualRoom
 		this.roomChildren = this.experience.world.room.roomChildren
 		// console.log(this.roomChildren); //所有子元素, 如果不用一个变量去统一接收的话, 就需要像 control 里边一样, 每次去判断 this.room.children.forEach...if( child.name === '...') {}
@@ -66,15 +78,31 @@ export default class Preloader extends EventEmitter {
 
 
 
-	// loading 加载动画 _ 位移小方块
+	// 🐲 第一个 loading 加载动画 _ 位移小方块
 	firstIntro() {
 		// 🚀🚀🚀 用异步的方式来触发这个动画, 不然一开始就会触发下一个动画了
 		return new Promise((resolve) => {
 			this.timeline = new GSAP.core.Timeline()
 
+			// 公共方法，不区分设备
+			this.timeline.set('.animatedis', {y:0, yPercent:100})//解决文字的响应式问题
+			this.timeline
+			.to('.preloader', {
+				opacity: 0,
+				delay: 0.5,
+				onComplete: ()=> {
+					document.querySelector('.preloader')!.classList.add('hidden')// 。。。 动画加载完后添加个类把它隐藏掉
+				}
+			})
+			.to(this.roomChildren.rectLight, { //🐟💡鱼缸的灯光, 等到 Control 加载时再被加上宽高（会有开灯的效果！）
+				width: 0,
+				height: 0,
+			})
+
 			// 根据不同的设备来展示不同的动画
 			if(this.device === 'desktop') {
-				this.timeline.to(this.roomChildren.cube.position, {
+				this.timeline
+				.to(this.roomChildren.cube.position, {
 					y: 0.1,
 				}).to(this.roomChildren.cube.scale, { //把所有子元素统一缩放
 					x: 1.4,
@@ -86,7 +114,7 @@ export default class Preloader extends EventEmitter {
 					x: -1, //向左移动
 					ease: "power1.out", //🌟参考 https://greensock.com/docs/v3/Eases
 					duration: 1,
-					onComplete: resolve,
+					// onComplete: resolve,
 				})
 			} else if (this.device === 'mobile') { 
 				this.timeline.to(this.roomChildren.cube.position, {
@@ -101,27 +129,50 @@ export default class Preloader extends EventEmitter {
 					z: -1, //向上移动
 					ease: "power1.out", //🌟参考 https://greensock.com/docs/v3/Eases
 					duration: 1,
-					onComplete: resolve,
+					// onComplete: resolve,
 				})
 			}
+			// 🧩🧩 单个文字的入场动画(注意，要先在上边的 setAssets 进行文字的拆分！)
+			this.timeline.to('.intro-text .animatedis', { //获得元素， 会匹配具有类名 'intro_Maintitle' 的【🌞父元素】下的所有具有类名 'animatedis' 的【🌛子元素】
+				yPercent: 0, //从哪个位置移入
+				stagger: 0.05, //每个文字之间的时间间隔
+				ease: "back.out(1.7)", 
+				// onComplete: resolve, //🤲🤲 配合异步函数, 当动画执行完毕后, 执行 resolve
+			})
+			.to('.arrow-svg-wrapper', { //🔥🔥向下的小箭头，直接匹配类名就行了！！！很方便
+				opacity: 1,
+			}, 'same')
+			.to('.toggle-bar', {
+				opacity: 1,
+				onComplete: resolve, //🤲🤲 配合异步函数, 当动画执行完毕后, 执行 resolve
+			}, 'same')
 		})
 	}
 
 
 
-	// loading 加载动画 _ 房间的物体依次变大
+	// 🐲 第二个 loading 加载动画 _ 房间的物体依次变大
 	secondIntro() {
 		// 🚀🚀🚀 用异步的方式来触发这个动画, 不然一开始就会被滚动的事件给触发了
 		return new Promise((resolve) => {
 			this.secondTimeline = new GSAP.core.Timeline()
 
 			// 移动端跟桌面端相同，不区分
-			this.secondTimeline.to(this.room.position, {
+			this.secondTimeline
+			.to('.intro-text .animatedis', { //🧩🧩 第一个动画的文字再移出去！！ 会匹配具有类名 'intro_Maintitle' 的【🌞父元素】下的所有具有类名 'animatedis' 的【🌛子元素】
+				yPercent: 100, //从哪个位置移入
+				stagger: 0.05, //每个文字之间的时间间隔
+				ease: "back.in(2)", 
+			}, 'fadeout')
+			.to('.arrow-svg-wrapper', { //🔥🔥向下的小箭头，直接匹配类名就行了！！！很方便
+				opacity: 0,
+			}, 'fadeout')
+			.to(this.room.position, {
 				x: 0,
 				y: 0,
 				z: 0, 
 				ease: "power1.out", //🌟参考 https://greensock.com/docs/v3/Eases
-				duration: 0.3,
+				duration: 0.5,
 			},'same')
 			.to(this.roomChildren.cube.rotation, {
 				y: 2*Math.PI + Math.PI / 4, //旋转
@@ -144,66 +195,86 @@ export default class Preloader extends EventEmitter {
 				y: 1,
 				z: 1,
 			})
-			.to(this.roomChildren.cube.scale, { //把 cube 方块缩小
+			.to(this.roomChildren.cube.scale, { //把 cube 方块缩小归 0
 				y: 0,
 				x: 0,
 				z: 0,
-			})
+			}, "introText")
+			.to('.hero-main-title .animatedis', { // 🧩🧩会匹配具有类名 'intro_Maintitle' 的【🌞父元素】下的所有具有类名 'animatedis' 的【🌛子元素】
+				yPercent: 0, //从哪个位置移入(👀注意方向！！！)
+				stagger: 0.07, //每个文字之间的时间间隔
+				ease: "back.out(1.8)", 
+			}, "introText")
+			.to('.hero-main-description .animatedis', { // 🧩🧩会匹配具有类名 'intro_Maintitle' 的【🌞父元素】下的所有具有类名 'animatedis' 的【🌛子元素】
+				yPercent: 0, //从哪个位置移入(👀注意方向！！！)
+				stagger: 0.07, //每个文字之间的时间间隔
+				ease: "back.out(1.8)", 
+			}, "introText")
+			.to('.hero-second-subheading .animatedis', { // 🧩🧩会匹配具有类名 'intro_Maintitle' 的【🌞父元素】下的所有具有类名 'animatedis' 的【🌛子元素】
+				yPercent: 0, //从哪个位置移入(👀注意方向！！！)
+				stagger: 0.07, //每个文字之间的时间间隔
+				ease: "back.out(1.8)", 
+			}, "introText")
+			.to('.hero-second-subheading .animatedis', { // 🧩🧩会匹配具有类名 'intro_Maintitle' 的【🌞父元素】下的所有具有类名 'animatedis' 的【🌛子元素】
+				yPercent: 0, //从哪个位置移入(👀注意方向！！！)
+				stagger: 0.07, //每个文字之间的时间间隔
+				ease: "back.out(1.8)", 
+			}, "introText")
 			.to(this.roomChildren.aquarium.scale, { // aquarium 水族箱放大
 				x: 1,
 				y: 1,
 				z: 1,
 				ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			},  ">-0.5") //插入到前一个动画结束的时间之后的 0.5 秒的位置
 			.to(this.roomChildren.clock.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 				ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			}, ">-0.4")
 			.to(this.roomChildren.shelves.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 				ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			}, ">-0.3")
 			.to(this.roomChildren.floor_items.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 				ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			}, ">-0.2")
 			.to(this.roomChildren.mini_floor.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 				ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			}, ">-0.1")
 			.to(this.roomChildren.desks.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 					ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			}, ">-0.1")
 			.to(this.roomChildren.table_stuff.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 					ease: "back.out(2.2)",
-				duration: 0.2,
-			})
+				duration: 0.4,
+			}, ">-0.1")
 			.to(this.roomChildren.computer.scale, { 
 				x: 1,
 				y: 1,
 				z: 1,
 					ease: "back.out(2.2)",
-				duration: 0.2,
+				duration: 0.4,
 			})
 			.to(this.roomChildren.chair.scale, { 
 				x: 1,
@@ -216,9 +287,12 @@ export default class Preloader extends EventEmitter {
 				y: 4 * Math.PI + Math.PI / 4,
 				ease: "power2.out",
 				duration: 1,
-				onComplete: resolve,
+				// onComplete: resolve,
 			}, 'chair') //同时播放
-
+			.to('.arrow-svg-wrapper', { //🔥🔥向下的小箭头，最后再出现
+				opacity: 1,
+				onComplete: resolve,//🤲🤲 配合异步函数, 当动画执行完毕后, 执行 resolve
+			})
 		})
 	}
 
@@ -285,7 +359,7 @@ export default class Preloader extends EventEmitter {
 		this.moveFlag = false// 调用更新位置的方法
 		this.scaleFlag = true// 调用更新缩放的方法
 
-		// 等加载动画播放完后才允许滚动：🎃🎃上面的事件全部完成后, 让 Controls 控制器生效, 这样就可以滚动页面了
+		// 等第 2 个加载动画播放完后才允许滚动：🎃🎃上面的事件全部完成后, 让 【🔥 Controls 控制器】生效, 这样就可以滚动页面了
 		this.emit('enableControls')
 	}
 

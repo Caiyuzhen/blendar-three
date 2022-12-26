@@ -82,6 +82,70 @@ he, section, p, span, svg {
 
 
 
+/* loading 加载...动画  */
+.preloader{
+	background-color: var(--color-background-light);
+	width: 100%;
+	height: 100vh;
+	position: fixed;
+	opacity: 1;
+	z-index: 99999999999999999;
+}
+
+.preloader-wrapper{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.loading{
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.circle{
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	margin: 6px;
+	background-color: var(--color-pink-light);
+	animation: load 1s ease-in-out infinite;
+}
+
+.circle:nth-child(2){
+	animation-delay: 0.1s;
+}
+
+.circle:nth-child(3){
+	animation-delay: 0.2s;
+}
+
+@keyframes load {
+	0% {
+		transform: translateY(0)
+	}
+
+	20% {
+		/* 先向上运动 */
+		transform: translateY(-12px) 
+	}
+
+	40% {
+		/* 再向下归位, 注意不是到 100%！ */
+		transform: translateY(0)
+	}
+}
+
+.hidden {
+	/* 在 Preloader 的 GSAP 内设置加上这个类名 */
+	display: none;
+}
+
+
 /* page ItSelf ———————————————————————————————————— */
 .page {
 	z-index: 999999;
@@ -95,6 +159,7 @@ he, section, p, span, svg {
 }
 
 
+
 /* 加载欢迎语句的动画, 在 covertTextToSpan 这个方法组件中生成 <span> 元素并且加入这个类名 */
 .animatedis {
 	display: inline-block;
@@ -102,13 +167,39 @@ he, section, p, span, svg {
 }
 
 .intro-text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: absolute;
-	top: 50%;
+	top: 55vh;
 	left: 50%;
 	font-weight: 500;
 	font-size: 18px;
 	color: var(--color-text);
 	transform: translate(-50%, -50%);
+}
+
+
+/* 向下的小箭头  */
+.arrow-svg-wrapper {
+	position: absolute;
+	top: 95vh;
+	left: 50%;
+	color: var(--color-text);
+	transform: translate(-50%, -50%);
+	/* 👇在 preloader 内等第一个动画加载完后来把透明度改为 1 */
+	opacity: 0;
+	/* bounce 为 keyframe 弹性动画的类名, alternate 轮流, infinite 无限循环*/
+	animation: bounce 0.5s ease-in alternate infinite;
+}
+
+@keyframes bounce {
+	0% {
+		transform: translateY(0)
+	}
+	100% {
+		transform: translateY(8px)
+	}
 }
 
 
@@ -124,6 +215,8 @@ he, section, p, span, svg {
 	top: 48px;
 	right: 48px;
 	z-index: 9999999999999;
+	/* 👇在 preloader 内等第一个动画加载完后来把透明度改为 1 */
+	opacity: 0; 
 }
 
 /* svg 图标, ⚡️⚡️要修改 svg 图标的填充色的话需要在 svg 标签内加上 fill="currentColor"  */
@@ -536,5 +629,24 @@ he, section, p, span, svg {
 	.progress-bar-wrapper-left {
 		right: 0;
 		left: auto;
+	}
+
+	.hero-main{
+		bottom: 120px;
+	}
+	  .hero-second{
+		top: 160px;
+	}
+	  .hero-wrapper{
+		width: calc(100% - 60px);
+	}
+	  .hero-main-title{
+		font-size: 32px;
+	}
+	  .hero-main-description{
+		font-size: 18px;
+	}
+	  .hero-second-subheading{
+		font-size: 18px;
 	}
 }

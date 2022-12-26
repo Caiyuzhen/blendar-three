@@ -22,6 +22,11 @@ export default class Experience {
 	public secondEle !: HTMLDivElement
 	public thirdEle !: HTMLDivElement
 	public sections! : NodeListOf<Element>
+	public intro_Text! : HTMLDivElement
+	public intro_Maintitle! : HTMLDivElement
+	public intro_MainDes! : HTMLDivElement
+	public intro_SecondSubHead! : HTMLDivElement
+	public intro_SecondSubTitle! : HTMLDivElement
 	public scene!: Scene   //THREE.Scene //类里边的实例属性
 	public time!: Time //类里边的实例属性
 	public sizes!: Sizes //类里边的实例属性
@@ -47,7 +52,11 @@ export default class Experience {
 				toggleCircle ? : HTMLInputElement, 
 				page ? : HTMLDivElement, 
 				sections ? : NodeListOf<Element>,
-				introText ? : HTMLDivElement,
+				intro_Text ? : HTMLDivElement,
+				intro_Maintitle ? : HTMLHeadingElement,
+				intro_MainDes ? : HTMLParagraphElement,
+				intro_SecondSubHead ? : HTMLParagraphElement,
+				intro_SecondSubTitle ? : HTMLParagraphElement,
 		) { 
 
 		// console.log('Hey, 成功新建类型');
@@ -70,6 +79,11 @@ export default class Experience {
 		this.resources = new Resources(Assets) //🔥实例化一个资源管理器, 赋值给 resources 属性
 		this.toggleButton = toggleButton as HTMLLabelElement
 		this.toggleCircle = toggleCircle as HTMLInputElement
+		this.intro_Text = intro_Text as HTMLDivElement
+		this.intro_Maintitle = intro_Maintitle as HTMLHeadingElement
+		this.intro_MainDes = intro_MainDes as HTMLParagraphElement
+		this.intro_SecondSubHead = intro_SecondSubHead as HTMLParagraphElement
+		this.intro_SecondSubTitle = intro_SecondSubTitle as HTMLParagraphElement
 		this.page = page as HTMLDivElement
 		this.sections = sections as NodeListOf<Element>
 		this.theme = new Theme( //把两个 toggle 元素传给它
@@ -80,7 +94,7 @@ export default class Experience {
 		this.world = new World() //🌍实例化一个世界, 赋值给 world 属性（🔥🔥world 一定义放最后面！不然获取不到 resources!）
 		this.preloader = new Preloader()
 
-		// 等加载动画播放完后才允许滚动：🎃🎃上面的事件全部完成后, 让 Controls 控制器生效, 这样就可以滚动页面了
+		//🚀🚀🚀 等 intro 加载动画播放完后才允许滚动：🎃🎃上面的事件全部完成后, 让 Controls 控制器生效, 这样就可以滚动页面了
 		this.preloader.on('enableControls', ()=>{
 			this.controls = new Controls()
 		})

@@ -12,7 +12,10 @@
 export default function (ele: HTMLDivElement) {
 	ele.style.overflow = 'hidden'
 	ele.innerHTML = ele.innerText.split("").map((char: string) => {
-		return `<span class='animatedis'></span>`
+		if(char === " ") { //如果该字符为空格，则使用 &nbsp; 来代替空格字符。
+			return `<span>&nbsp;</span>`
+		}
+		return `<span class='animatedis'>${char}</span>`
 	}).join("")
 
 	return ele
