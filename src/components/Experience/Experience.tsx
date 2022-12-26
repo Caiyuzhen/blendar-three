@@ -10,6 +10,7 @@ import Assets from './utils/Assets'
 import Room from './World/Room'
 import Theme from './Theme'
 import World from './World/World'
+import Controls from './World/Controls'
 import Preloader from './Preloader'
 
 
@@ -28,17 +29,28 @@ export default class Experience {
 	public renderer!: Renderer //类里边的实例属性
 	public resources!: Resources //类里边的实例属性
 	private toggleButton!: HTMLLabelElement
+	public page!: HTMLDivElement
 	private toggleCircle!: HTMLInputElement
 	public theme!: Theme 
 	public world!: World //定义一个世界(所有模型都在 World 里边的 Home 进行实例化！)
 	public preloader!: Preloader
+	public controls!: Controls
 	// public room!: Room
 
 
 
-	constructor(canvas ? : HTMLCanvasElement, firstEle ? : HTMLDivElement, secondEle ? : HTMLDivElement, thirdEle ? : HTMLDivElement, toggleButton ? : HTMLLabelElement, toggleCircle ? : HTMLInputElement, sections ? : NodeListOf<Element>) { //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
-		// console.log('Hey, 成功新建类型');
+	constructor(canvas ? : HTMLCanvasElement, 
+				firstEle ? : HTMLDivElement, 
+				secondEle ? : HTMLDivElement, 
+				thirdEle ? : HTMLDivElement, 
+				toggleButton ? : HTMLLabelElement,  //三个参数都由上一层的函数组件传入, toggleButton 、toggleCircle 需要传给 Theme 组件
+				toggleCircle ? : HTMLInputElement, 
+				page ? : HTMLDivElement, 
+				sections ? : NodeListOf<Element>,
+				introText ? : HTMLDivElement,
+		) { 
 
+		// console.log('Hey, 成功新建类型');
 		// 返回实例
 		if(Experience.instance) {
 			return Experience.instance
@@ -58,6 +70,7 @@ export default class Experience {
 		this.resources = new Resources(Assets) //🔥实例化一个资源管理器, 赋值给 resources 属性
 		this.toggleButton = toggleButton as HTMLLabelElement
 		this.toggleCircle = toggleCircle as HTMLInputElement
+		this.page = page as HTMLDivElement
 		this.sections = sections as NodeListOf<Element>
 		this.theme = new Theme( //把两个 toggle 元素传给它
 			this.toggleButton,
@@ -66,11 +79,17 @@ export default class Experience {
 
 		this.world = new World() //🌍实例化一个世界, 赋值给 world 属性（🔥🔥world 一定义放最后面！不然获取不到 resources!）
 		this.preloader = new Preloader()
-		// this.room = new Room() //实例化一个房间, 里边的 actualRoom 是最终需要展示出来的元素(可以通过上面的 World 调用)
-		// console.log(this.resources);
-		// console.log(this.firstEle);
 
-		
+		// 等加载动画播放完后才允许滚动：🎃🎃上面的事件全部完成后, 让 Controls 控制器生效, 这样就可以滚动页面了
+		this.preloader.on('enableControls', ()=>{
+			this.controls = new Controls()
+		})
+
+
+		// this.room = new Room() //实例化一个房间, 里边的 actualRoom 是最终需要展示出来的元素(可以通过上面的 World 调用)
+		// console.log(this.resources); // console.log(this.firstEle);
+
+
 		/* events.EventEmitter, 事件, 根据 Time 内的事件来更新，然后调用所有子类的 update() 方法 */
 		//🎃第四步: 调用触发器, 触发 Experience 内的更新方法
 		this.time.on("Update", ()=>{ //时间更新，触发 Update 事件
@@ -93,7 +112,8 @@ export default class Experience {
 		this.renderer.update()
 	}
 
-	resize() { //Size 更新后, 调用 camera 和 renderer 的 resize 方法
+	resize() { //Size 更新后, 调用 camera 和 renderer 的 resize 方法 (⚡️响应式的原理, 后续其他组件的更新都统一到这里进行调用)
+		this.preloader.update()
 		this.camera.resize()
 		this.renderer.resize()
 	}

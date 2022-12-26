@@ -15,6 +15,7 @@ export const MainView = () => {
 	const thirdMoveRef = useRef<HTMLDivElement>(null) // ref 获取 GSAP 要判断的 HTML 元素, 传入 Experience
 	const toggleButton = useRef<HTMLLabelElement>(null)
 	const toggleCircle = useRef<HTMLInputElement>(null)
+	const page = useRef<HTMLDivElement>(null)
 
 	  
 
@@ -32,6 +33,7 @@ export const MainView = () => {
 			thirdMoveRef.current!, 
 			toggleButton.current!, 
 			toggleCircle.current!,
+			page.current!,
 			sections,
 		) //new 一个 experience 实例, 传入两个 html 元素
 		return () => {
@@ -50,7 +52,7 @@ export const MainView = () => {
 					<canvas className="experience-canvas" ref={canvasRef}></canvas>
 				</div>
 
-				<div className="page">
+				<div className="page" ref={page}>
 
 					{/* 🔘深色模式 & 浅色模式按钮 */}
 					<div className="toggle-bar">
@@ -74,6 +76,9 @@ export const MainView = () => {
 						{/* 首屏 */}
 						<section className="hero">
 							<div className="hero-wrapper">
+								{/* loading 加载语句 */}
+								<div className="intro-text">Welcome to my portfolio!</div>
+
 								{/* 左边标题 */}
 								<div className="hero-main">
 									<h1 className="hero-main-title">Abigail Bloom</h1>
@@ -82,7 +87,7 @@ export const MainView = () => {
 								{/* 右边标题 */}
 								<div className="hero-second">
 									<p className="hero-second-subheading">Zeno's</p>
-									<p className="hero-second-subheading">Portfolio</p>
+									<p className="hero-second-subheading second-sub">Portfolio</p>
 								</div>
 							</div>
 						</section>

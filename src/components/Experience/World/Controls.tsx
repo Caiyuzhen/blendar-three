@@ -31,6 +31,7 @@ export default class Controls {
 	public firstEle: HTMLDivElement
 	public secondEle: HTMLDivElement
 	public thirdEle: HTMLDivElement
+	public page: HTMLDivElement
 	public sections: NodeListOf<Element>
 	public progressWrapper!: HTMLDivElement | null
 	public progressBar!: HTMLDivElement | null
@@ -80,6 +81,8 @@ export default class Controls {
 		this.thirdEle = this.experience.thirdEle //HTML 元素, 用于判断 GSAP 加载动画的位置
 		this.progressWrapper 
 		this.progressBar 
+		this.page = this.experience.page
+		this.page.style.overflow = 'visible'
 		this.sections = this.experience.sections
 		this.room.children.forEach( (child) => {
 			if(child.type === 'RectAreaLight') { //Three 灯光类型

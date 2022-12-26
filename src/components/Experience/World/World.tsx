@@ -49,7 +49,7 @@ export default class World extends EventEmitter{ //下面要用 emit 发出事�
 			this.environment = new Environment() //创建一个灯光环境
 			this.floor = new Floor() ////🏓导入新物体第三步（地板要在 Room 之前创建）
 			this.room = new Room() //创建一个房间 
-			this.controls = new Controls() //曲线, 控制相机的运动方向
+			// this.controls = new Controls() //(🔥🔥先不实例化了, 等 Preloader 的动画播放完再在 Experience 内实例化！！）曲线, 控制相机的运动方向、以及房间的各种滚动动画
 			// console.log(this.scene);
 			this.emit("worldReady") // ⚡️⚡️接收到 ready 事件后，再去发送一个 worldReady 事件，通知 Preloader
 		})

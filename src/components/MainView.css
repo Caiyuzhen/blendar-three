@@ -17,7 +17,6 @@ html, body {
 }
 
 body {
-	overflow: hidden; /* 隐藏滚动条 */
 }
 
 /* 偷懒，快速添加过渡属性, 让深浅色的切换更柔缓 */
@@ -82,17 +81,36 @@ he, section, p, span, svg {
 
 
 
+
 /* page ItSelf ———————————————————————————————————— */
 .page {
 	z-index: 999999;
 	width: 100%;
-	height: 100%;
-	overflow: hidden;
+	height: 100vh;
+	overflow: hidden; /* 🚗🚗控制页面能不能向下滚动！！ */
 }
 
 .page-wrapper {
 	position: relative;
 }
+
+
+/* 加载欢迎语句的动画, 在 covertTextToSpan 这个方法组件中生成 <span> 元素并且加入这个类名 */
+.animatedis {
+	display: inline-block;
+	transform: translateY(100%);
+}
+
+.intro-text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-weight: 500;
+	font-size: 18px;
+	color: var(--color-text);
+	transform: translate(-50%, -50%);
+}
+
 
 
 /* 开关 toggle Bar */
